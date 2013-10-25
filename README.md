@@ -1,5 +1,5 @@
 yunwei
-======
+======================
 
 基于django的服务器批量管理系统
 
@@ -13,5 +13,3 @@ yunwei
     python manage.py syncdb
 启动:
     python manage.py 0.0.0.0:8000
-
-    
