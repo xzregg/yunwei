@@ -7,7 +7,7 @@ yunwei
 
 需要:
 
-    yum -y install gcc python-devel mysql-devel MySQL-python freetype-devel openssh-clients python-sqlite python-setuptools
+    yum -y install gcc python-devel mysql-devel sqlite-devel MySQL-python freetype-devel openssh-clients python-sqlite python-setuptools
     python版本2.6或者2.7,注意编译安装完，要修改yum命令
     python包:
 	    pexpect
