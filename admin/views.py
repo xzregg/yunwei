@@ -611,7 +611,7 @@ def ShowLogs(request):
 	# T.row_add(o[0],[o[0],o[1],datetime.datetime.strftime(o[2],TimeFormat),o[5],o[3],o[4].replace('\n','<br>')],['','','','','','class="EditTD"'])
 	for o in  Logs:  
 		T.row_add(o.id,
-					[o.id,o.who,DateTimeToStrTime(o.logdatetime),o.ip,o.title,o.info.replace('\n','<br>').replace('<',r'&lt;').replace('>',r'&gt;')],
+					[o.id,o.who,DateTimeToStrTime(o.logdatetime),o.ip,o.title,o.info.replace('<',r'&lt;').replace('>',r'&gt;').replace('\n','<br>')],
 					['','','','','','class="EditTD"']
 				)
 	T.done()
