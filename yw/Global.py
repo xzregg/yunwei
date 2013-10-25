@@ -11,11 +11,12 @@ from libs.html import *
 from libs.timelib import *
 from .core.ssh import Host
 
-
+_thispath = os.path.realpath(__file__)
 #定义全局变量
 ConcurrencyNums=150
-ScriptDir=os.path.join(os.path.dirname(__file__),'shellscript')
-FileObjectsDir=os.path.join(os.path.dirname(__file__),'fileobjects')
+
+ScriptDir=os.path.join(os.path.dirname(_thispath),'shellscript')
+FileObjectsDir=os.path.join(os.path.dirname(_thispath),'fileobjects')
 
 WebSSHAddress='127.0.0.1:7001'
 WebSSHFormat='''<a href="javascript:viod(0);" onclick="window.open ('%s',Math.round(Math.random()*1000000000),'height=400,width=500,scrollbars=no')" >%s</a>'''
