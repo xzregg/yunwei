@@ -1,0 +1,41 @@
+<html>
+<head>
+{%include "jscss/loadbasejs.html"%}
+
+  <style>
+
+  .selectable .ui-selecting { background: #FECA40; }
+  .selectable .ui-selected { background: #F39814; color: white; }
+  .selectable { list-style-type: none; margin: 0; padding: 0; width: 450px; }
+  .selectable li { margin: 3px; padding: 1px; float: left; width: 100px; height: 80px; font-size: 4em; text-align: center; }
+  </style>
+</head>
+<body style="padding: 0px; margin: 0px;height:500px">
+<div id="tabs" >
+	<ul>
+	{% for k in OneKeyLabel.keys  %}
+		<li><a href="#{{k}}_tab">{{k}}</a></li>
+	{% endfor %}
+	</ul>
+	{% for k,v in OneKeyLabel.items  %}
+	<div id="{{k}}_tab">
+		<br>
+		{% for d in v%}
+		<a class="ajax_{{Random}}"  href='javascript:void(0)' ajaxurl='{{d.ajaxurl}}' title="{{d.title}}" method='{{d.method}}'  >{{d.html}}</a>
+		{% endfor %}
+		
+	</div>	
+	{%endfor%}
+</div>
+
+
+<script>
+$(".ajax_{{Random}}").button()
+$(".ajax_{{Random}}").tooltip({  position: "right"})
+$( "#tabs" ).tabs({
+			event: "mouseover"
+});
+  </script>
+  {%include "ajaxjs.html"%}
+</body>
+</html>

@@ -1,0 +1,15 @@
+﻿<div id="delresponse"style="width:300px">
+
+	<form id="form_{{Random}}">
+		{%include "ajaxbutton.html"%}
+		{%include "includes/hostgroupselect.html"%}
+	<br>
+	<br>
+	<hr>
+	{%for h in Selects%}
+		<input type="checkbox" name="checkbox" value="{{h}}" checked="true" ><label>{{h}}</label><br>
+	{%endfor%}
+	</form>
+</div>
+
+{%include "ajaxjs.html"%}

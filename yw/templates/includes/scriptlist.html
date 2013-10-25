@@ -1,0 +1,57 @@
+﻿
+ <!--style>
+  .ui-menu { width: 150px; }
+ </style--> 
+<div style="width: 150px;text-align:center;">
+<ul id="scrpit_{{Random}}-menu">
+{% for k,v in scriptul.iteritems %}
+  <li>
+    <a href="javascript:void(0);" style="font-weight:bold;font-size:15px" >{{k}}</a>
+    <ul>
+	{% for o in v %}
+		 <li>
+		 <a href="javascript:void(0)" title='{{o.1}}' style="padding:1px;font-size:13px;color:blue" >{{o.0}}</a>
+		 <ul>
+			<li><a href="javascript:void(0)"  tip='{{o.1}}' scriptfile="{{o.0}}" class="RunScript_{{Random}}" style="padding:8px;width:50px">运行</a></li>
+			<li>{{o.2|safe}}</li>
+		 </ul>
+		 </li>
+	{% endfor %}
+    </ul>
+  </li>
+ {% endfor %}
+</ul>
+</div>
+
+
+<script>
+ $(function() {
+    $( "#scrpit_{{Random}}-menu" ).menu({
+	focus: function( event, ui ) {}
+});
+});
+  
+ $('.RunScript_{{Random}}').click(function(){
+	var scriptfile=$(this).attr("scriptfile")
+	var Help=$(this).attr('tip').replace(/\n/g,'<br>')
+	var theResponse=''
+	art.dialog({
+		top:30,
+		content: Help+'<hr><input type="text" id="ScriptOption_{{Random}}"  style="width:200px">',
+		title:'输入脚本 '+scriptfile+' 运行的参数<br>',
+		ok: function () {
+			theResponse=$("#ScriptOption_{{Random}}").val()
+			this.close();
+			if (theResponse!=null){
+				$("#text_{{Random}}").val(scriptfile+' '+theResponse)
+				$('.run_{{Random}}').click()
+			}
+			return false;
+		},
+		cancelVal: '关闭',
+		cancel: true ,//为true等价于function(){}
+		lock:true
+	
+	});
+})
+ </script>

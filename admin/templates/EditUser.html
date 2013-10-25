@@ -1,0 +1,58 @@
+<html>
+<head>
+{%include "jscss/loadbasejs.html"%}
+{%include "jscss/rsajs.html"%}
+<style>
+*{font-size:12px}
+#edituser{float:right}
+</style>
+</head>
+<body>
+<div id="edituser_div">
+ <form id ="form_{{Random}}" action="" method='post' class="pull-right">
+ <h4>编辑[{{UserName}}]信息</h4>
+ <hr>
+ <table>
+	<th></th><th></th>
+	<tr><td><label>登录名</label></td><td><input  name='loginname' class="input-small" type="text" value="{{LoginName}}"></td></tr>
+	<tr><td><label>真实姓名</label></td><td><input name='username' class="input-small" type="text" value="{{UserName}}"></td></tr>
+	<tr><td>联系方式:</td><td><input name='contact'  type="text" value="{{Contact}}"></td></tr>
+        <tr><td><label>登录密码</label></td><td><input id ="passwordA"  type="password" ><input id="b" name='password'  type="hidden"></td></tr>
+	<tr><td><label>再次输入</label></td><td><input id ="passwordB"  type="password" ></td></tr>
+	<tr><td></td><td><button  type="button" ajaxurl="" id="edituser">保存</button></td></tr>
+</table>
+ </form>
+
+</div>
+
+<script charset="utf-8" >
+$("#edituser").click(function(){
+setMaxDigits(131);
+var url=$(this).attr("ajaxurl")
+var a=$("#passwordA").val()
+var b=$("#passwordB").val()
+if (a==b){
+ $.ajax({ 
+    async:false,
+	url: "/login/",
+	data: "action=GetMePublickey", 
+	type: "post", 
+	cache : false, 
+	success: function(data) {
+	var rsa_n=data;
+	var password=$('#passwordB').val();
+	var key = new RSAKeyPair("10001", '', rsa_n); 
+	password = encryptedString(key, password);
+	$('#b').val(password)
+	 $.ajax({url:url,type: "post",data:$('#form_{{Random}}').serialize(),async:false,success:function(data){$("#edituser_div").html(data)}})
+	} 
+})
+}else{
+alert('两次密码不一样！')
+}
+
+})
+</script>
+
+</body>
+</html>

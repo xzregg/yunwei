@@ -1,0 +1,17 @@
+
+{%include "ajaxbutton.html"%}
+<hr>
+<form id="form_{{Random}}"  >
+<input type='checkbox' name='checkall'/><label>全选</label><br>
+{{UserCheckBox|safe}}
+</form>
+<script charset="utf-8" >
+$("[name='checkall']").click(function(){
+	var ck =false
+	if ($(this).attr("checked")){var ck =true}
+	$(this).closest("form").find("input[name=checkbox]").each(function(){
+	$(this).attr({"checked":ck})
+})})
+</script>
+{%include "ajaxjs.html"%}
+

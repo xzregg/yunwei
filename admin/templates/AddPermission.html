@@ -1,0 +1,37 @@
+<html>
+<head>
+{%include "jscss/loadbasejs.html"%}
+<style>
+body{width:400px;height:350px}
+</style>
+</head>
+<body >
+
+{%include "ajaxbutton.html"%}
+<hr>
+ <form id ="form_{{Random}}"  method='post' >
+ <table>
+		<tr><td><label>功能名</label></td><td><input  name='title'  type="text"></td></tr>
+		<tr><td><label>所属视图</label></td><td>
+        <select id="viewsselect"  name="viewsselect" class="easyui-combobox">
+        {%for k,v in ViewsSerect.items %}
+            <optgroup label="{{k}}">
+            {%for op in v%}
+                <option value="{{op.0}}">{{op.1}}</option>
+            {%endfor%}
+             </optgroup>
+        {%endfor%}
+        </select>
+        </td></tr>
+		<tr><td><label>权限属组</label></td><td><input  name='groupname' type="text" ></td></tr>
+<tr><td><label>键值</label></td><td><input style="width:300px" name='kv'  type="text" placeholder="k=v"></td></tr>
+		
+</table>
+ </form>
+<hr>
+<script>
+
+</script>
+{%include "ajaxjs.html"%}
+</body>
+</html>

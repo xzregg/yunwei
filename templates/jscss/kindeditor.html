@@ -1,0 +1,35 @@
+{% with '/static/' as URI %}
+<script charset="utf-8" src="{{URI}}kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="{{URI}}kindeditor/lang/zh_CN.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="{{URI}}kindeditor/plugins/code/prettify.css" />
+<script type="text/javascript" src="{{URI}}kindeditor/plugins/code/prettify.js"></script>
+
+<script>
+function myKindEditor(id,parameter){
+    var DefaultParameter={
+    allowFileManager : true,
+    cssPath : ['{{URI}}kindeditor/plugins/code/prettify.css'],
+    resizeType:2,//2或1或0，2时可以拖动改变宽度和高度，1时只能改变高度，0时不能拖动。
+    width:"100%",
+    //height:"800px",
+    //minwidth:500,
+    //minHeight:800,
+    afterChange : function () {  //输入文字事件
+    	//var autoheight = KindEditor.IE ? this.edit.doc.body.scrollHeight : this.edit.doc.body.offsetHeight;  //判断是否是IE，并获取内容高度。
+     	//this.edit.setHeight(autoheight);   //设置高度
+        //prettyPrint();
+ 		}
+    }
+    for(var y in parameter){DefaultParameter[y] = parameter[y];}
+    //console.dir(DefaultParameter)
+    return KindEditor.create(id,DefaultParameter)
+}
+</script>
+<script>
+$(function(){
+    prettyPrint();
+ });
+</script>
+{% endwith %}

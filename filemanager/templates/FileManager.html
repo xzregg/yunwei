@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">  
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<title>文件管理</title>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		
+		<link href="/static/filemanager/css/jquery-ui.css" rel="stylesheet" type="text/css" media="screen" />
+		<script src="/static/filemanager/jquery.min.js" type="text/javascript"></script>
+        <script src="/static/filemanager/jquery-ui-min.js" type="text/javascript"></script>
+		<script src="/static/filemanager/gsFileManager.js" type="text/javascript"></script>
+		<script src="/static/filemanager/jquery.form.js" type="text/javascript"></script>
+		<script src="/static/filemanager/jquery.Jcrop.js" type="text/javascript"></script>
+		<script src="/static/filemanager/ckeditor.js" type="text/javascript"></script>
+	
+		<link href="/static/filemanager/gsFileManager.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/static/filemanager/jquery.Jcrop.css" rel="stylesheet" type="text/css" media="screen" />
+		
+		<style>
+		   body {
+		      height: 500px;
+		      width: 100%;
+		   }
+		   
+		</style>
+		<script type="text/javascript">
+			
+			$(document).ready( function() {
+				
+				jQuery('#fileTreeDemo_1').gsFileManager({ script: '{{ScriptUrl}}' });
+				
+			});
+		</script>
+
+	</head>
+	
+	<body>
+		下载路径：{{DownloadURL}}
+	    <div style="height: 16px; line-height: 16px">&nbsp;</div>
+        <div id="fileTreeDemo_1" class="demoto">
+        
+        </div>
+        	
+	</body>
+	
+</html>

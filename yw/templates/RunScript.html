@@ -1,0 +1,60 @@
+﻿<div id="script_div_{{Random}}"  style="font-size:13px">
+	<form id="form_{{Random}}">
+
+	<div id="Rtop" style="clear: both;width:100%;height:100%">
+	<button class="run_{{Random}}" type="button" >执行</button>
+		<label>连接超时:</label>
+		<select id="cmdtimeout_{{Random}}" name="cmdtimeout">
+				<option value ="10">10</option>
+				<option value ="30">30</option>
+				<option value ="60">60</option>
+		</select>
+		<label>并发数:</label>
+		<select id="concurrency_{{Random}}" name="concurrency">
+				<option value ="150">150</option>
+				<option value ="100">100</option>
+				<option value ="50">50</option>
+				<option value ="300">300</option>
+		</select>
+		<label>头信息:</label>
+		<select id="sshtitle_{{Random}}" name="sshtitle">
+				<option value ="0">否</option>
+				<option value ="1">是</option>
+		</select>
+
+			{%include "includes/hostgroupselect.html"%}
+
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<label>程序:</label><input id="scripttype_{{Random}}" type='text' name='scripttype' style="width:50px">
+		<label>后台:</label>
+		<select id="daemon_{{Random}}" name="daemon">
+				<option value ="0">否</option>
+				<option value ="1">是</option>
+		</select>
+		<br>
+		<div id="script_tabs_{{Random}}" style="height:250px" >
+			<ul>
+				<li><a href="#tabs_{{Random}}-1">脚本列表</a></li>
+				<li><a href="#tabs_{{Random}}-2">手写</a></li>
+			</ul>
+			<div id="tabs_{{Random}}-1" >
+				{% include "includes/scriptlist.html"%}
+			</div>
+			<div id="tabs_{{Random}}-2">
+				<textarea id="text_{{Random}}" style="height:200px;width:540px" name='script'></textarea> 
+			</div>
+		</div>
+	</div>
+	</form>
+	<a id="ShowOneKeyUrl_{{Random}}" href="javascript:void(0);" >OneKeyURL</a>
+
+</div>
+{%include "ajaxjs.html"%}
+{%include "includes/cmdjs.html"%}
+<script type="text/javascript">
+ $(function() {
+$(function() {
+	$( "#script_tabs_{{Random}}" ).tabs();
+});
+});
+</script>

@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+{%include "jscss/loadbasejs.html"%}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<style type="text/css">
+table.display td.Normal{
+    padding: 3px 1px;
+	text-align: center;
+	}
+.ui-tabs {
+    padding: 0.2em;
+    position: relative;
+}
+.ui-tabs .ui-tabs-nav li a {<!--tab字体的样式-->
+    float: left;
+    padding: 0.2em 0.5em;
+    text-decoration: none;
+    font-size: 15px;
+}
+.ui-tabs .ui-tabs-panel {
+    padding: 0.4em 0.4em;
+}
+.ui-widget {<!--table字体-->
+    font-family: ;
+    font-size: 12px;
+}
+
+table.display  {
+    border-bottom: 1px solid black;
+	font-size: 10px;
+}
+#tabs ul{
+height:25px
+}
+#tabs li .ui-icon-refresh { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
+</style>
+</head>
+<body style="padding: 0px; margin: 0px">
+
+<div id="tabs" >
+	<ul>
+	{% for t in TabUrl  %}{#增加tab#}
+		<li><a href="{{t.0}}">{{t.1}}</a> <span class="ui-icon ui-icon-refresh" ></span></li>
+	{% endfor %}
+	</ul>
+	{% for t in TabUrl %}
+	<div id="tabs-{{t.0}}"></div>	
+	{%endfor%}
+</div>
+
+
+<script charset="utf-8">
+	var tabs =$( "#tabs" ).tabs({
+			beforeLoad: function( event, ui ) {
+				ui.jqXHR.error(function() {
+					ui.panel.html(
+						"<img src='/static/images/loading1.gif' style='height:25px'>" );
+				});
+			
+			},
+			ajaxOptions: { async: false }
+		});//tab分页
+
+	tabs.delegate( "span.ui-icon-refresh", "click", function() {
+      var panelId = $( this ).closest( "li" ).index()
+      var aa =$( this ).prev( "a" )
+      var This=$(this)
+      $(this).removeClass()
+      var olehtml=aa.html()
+      aa.html("<img src='/static/images/loading1.gif' style='height:15px'>")
+      tabs.tabs( "load",panelId );
+      setTimeout(function(){
+        aa.html(olehtml);
+        $(This).addClass("ui-icon ui-icon-refresh")
+      },500)
+    });
+</script>
+</body>
+</html>

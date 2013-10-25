@@ -1,0 +1,44 @@
+/* 转载请保留版权信息：懒人图库 www.lanrentuku.com */
+*{padding:0;margin:0}
+html{min-height:101%}
+body{font-family:verdana,arial,tahoma;font-size:12px;color:#324143}
+
+ul,ol,li {list-style:none}
+a{text-decoration:none;word-wrap:break-word}
+a:hover{text-decoration:underline}
+img{border:0}
+p{line-height:26px}
+
+/* 框架 */
+
+
+/* 顶部导航 */
+.topnav{width:1160px;height:33px;line-height:33px;padding:0 12px}
+.topnav .l{float:left;color:#999}
+.topnav .r{float:right;color:#DDD}
+.topnav .r a{color:#666;cursor:pointer}
+.topnav .r a:hover{color:#390}
+
+/* logo */
+#header{width:1160px;height:80px}
+#header .logo img{width:446px;height:42px;position:absolute;top:20px;left:12px}
+#header .weibo{position:absolute;top:34px;right:12px}
+
+/* 全站导航 */
+#daohang{height:32px;background-color:#324143;margin-bottom:0px;position:relative;z-index:99}
+.home{margin-left:16px}
+.tab{position:relative;display:block;float:left;cursor:pointer}
+.tab .tablink{position:relative;padding:1px 6px;line-height:30px;display:block;height:30px;color:#fff;font-size:14px;z-index:99;float:left}
+.tab .tablink a{line-height:30px;color:#FFF;text-decoration:none}
+.tab:hover{background-color:#FFF}
+.tab:hover .tablink{color:#357d13;border:1px solid #629d2a;padding:0 11px;text-decoration:none}
+.tab:hover .tablink a{color:#357d13}
+.dropdown:hover .arwlink{border-bottom:1px solid #FFF;border-left:1px solid #629d2a;height:31px}
+.dropdown ul{display:none}
+.dropdown:hover ul{position:absolute;display:block;margin-left:-1px;top:32px;left:1px;z-index:9}
+.subnav{width:330px}
+.subnav a{padding:4px 0 4px 10px;line-height:16px;width:100px;display:block;color:#324143;float:left}
+.subnav :hover{text-decoration:underline;color:#080}
+.dropdown .subnav{background-color:#FFF;border:1px solid #390;padding:8px}
+
+

@@ -1,0 +1,85 @@
+﻿<html>
+<head>
+{%if isGET%}
+	{%include "jscss/loadbasejs.html"%}
+<style>
+
+.ui-tabs {
+    padding: 0.2em;
+    position: relative;
+}
+.ui-tabs .ui-tabs-nav li a {<!--tab字体的样式-->
+    float: left;
+    padding: 0.2em 0.5em;
+    text-decoration: none;
+    font-size: 15px;
+}
+.ui-tabs .ui-tabs-panel {
+    padding: 0.4em 0.4em;
+}
+</style>
+{%endif%}
+</head>
+<body >
+<fieldset id ="fieldset_{{Random}}">
+<legend >{{Webssh|safe}}</legend>
+	<div id="tabs_{{Random}}" style="width:520px">
+		<ul>
+			<li><a href="#Action_tab_{{Random}}">执行</a></li>
+			{% if EditHostURL %}
+			<li><a href="#info_tab_{{Random}}">信息</a></li>
+			{% endif %}
+			<li><a href="{{CronURL}}">计划任务</a></li>
+			<li><a href="{{IptablesURL}}">防火墙</a></li>
+			<li><a href="{{FileObjURL}}">文件对象</a></li>
+		</ul>
+		<div id="Action_tab_{{Random}}"  >
+			<div id="radio_{{Random}}">
+				<input type="radio" id="CMD_{{Random}}" name="radio" /><label for="CMD_{{Random}}">命令</label>
+				<input type="radio" id="script_{{Random}}" name="radio" /><label for="script_{{Random}}">脚本</label>
+			</div>
+			<form id="form_{{Random}}">
+			<span id="CMD_span_{{Random}}">
+					<textarea id="text_{{Random}}" style="height:30px;width:200px" name='CMD'></textarea>
+					<button class="run_{{Random}}" type="button" >执行</button>
+			</span>
+			<span id="script_span_{{Random}}">
+					{%include "includes/scriptlist.html"%}
+			</span>
+			</form>
+		</div>
+		{% if EditHostURL %}
+		<div id="info_tab_{{Random}}">
+			<iframe  src="{{EditHostURL}}" width="100%"  height="500px" frameborder="0" marginwidth="0" marginheight="0"></iframe>
+		</div>
+		{% endif %}
+
+
+		
+	</div>
+</fieldset>
+{%include "ajaxjs.html"%}
+{%include "includes/cmdjs.html"%}
+<script>
+ $(function() {
+	$("#Action_tab_{{Random}} span").hide()	
+	$( "#radio_{{Random}}" ).buttonset();
+	$("#tabs_{{Random}}").tabs();
+	
+	$("#CMD_{{Random}}").click(function(){
+		$("#CMD_span_{{Random}}").show()
+		$("#script_span_{{Random}}").hide()
+		$("#text_{{Random}}").attr("name","CMD")
+	})
+		
+	$("#script_{{Random}}").click(function(){
+		$("#CMD_span_{{Random}}").hide()
+		$("#script_span_{{Random}}").show()
+		$("#text_{{Random}}").attr("name","script")
+	})
+	$("#CMD_{{Random}}").click()
+});
+</script>
+</body>
+</html>
+

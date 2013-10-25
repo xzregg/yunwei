@@ -1,0 +1,58 @@
+﻿
+<script type="text/javascript">
+/*
+运行命令个脚本的js
+*/
+ $(function() {
+ $("#ShowOneKeyUrl_{{Random}}").unbind()
+ $("#ShowOneKeyUrl_{{Random}}").click(function(){
+art.dialog({padding: 2,top:50,title:"一键URL",content:'<font size=1>'+$('#form_{{Random}}').serialize()+'</font>'})
+})
+
+var isJson = function(obj){
+		var isjson = typeof(obj) == "object" && Object.prototype.toString.call(obj).toLowerCase() == "[object object]" && !obj.length;
+		return isjson;
+	}
+$(".run_{{Random}}").unbind()
+
+ $(".run_{{Random}}").click(function(){
+	if ($('#text_{{Random}}').val()){
+		var Data=$('#form_{{Random}}:visible').serialize()
+		if($("#fieldset_{{Random}}").length==0){//主机属性面板时不用加
+			Data=Data+'&'+$('#hosts_div form').serialize()
+		}
+		var Value=$('#text_{{Random}}').val()
+		if (confirm("确定运行吗?")){
+				var myDialog_{{Random}} = art.dialog.through;//穿越框架
+				myDialog_{{Random}} = myDialog_{{Random}}({id:{{Random}},title:"执行结果",padding:0,top:100,content:"<h5>("+Value+")执行中..."+"<img src='/static/images/loading1.gif' style='height:25px'></h5><br>",lock:true,esc:false})
+				//$(".aui_close").css("display","none")
+				$.ajax({ 
+					type: "post", 
+					url: "{{InterfaceURL}}", //本路径
+					dateType: "json", 
+					async:true,//同步模式
+					data: Data,
+					beforeSend:'',
+					cache : false, 
+					error:function(x){
+						myDialog_{{Random}}.content(x.responseText+'<h3>发生错误！</h3>').unlock().size(500)
+					},
+					success:function(data){
+						onekeyurl='<a href="#" onclick="art.dialog({top:100,padding: 2,title:&quot;一键URL&quot;,content:&quot;<font size=1>'+Data+'</font>&quot;})" >OneKeyURL</a><br>'
+						myDialog_{{Random}}.content(onekeyurl+data).unlock()
+						},
+					})
+				}
+	}else{alert("没有命令！")}		
+});
+/*
+document.onkeydown = function (e) {
+var theEvent = window.event || e;
+var code = theEvent.keyCode || theEvent.which;
+if (code == 13) {
+$("#runcmd_{{Random}}").click();
+}
+} 
+*/
+});
+</script>

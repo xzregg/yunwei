@@ -1,0 +1,98 @@
+﻿<html>
+<head>
+{%include "jscss/loadbasejs.html"%}
+{%include "jscss/rsajs.html"%}
+<style>
+body{height:400px;width:400px;font-size:12px}
+#div_{{Random}}{font-size:12px}
+#table_{{Random}}{font-size:12px}
+</style>
+</head>
+<body >
+<label>主机信息[{{ip}}]</label>
+<hr>
+<div id="div_{{Random}}">
+	<form id="form_{{Random}}" method="post" >
+	{% include "ajaxbutton.html" %}
+
+	<table id="table_{{Random}}">
+		<tr><td>主机别名:</td><td></td></tr>
+		<tr>
+			<td><input id="HostIP" type="text" name="HostAlias" value="{{alias}}"></td>
+			<td></td>
+		</tr>
+		<tr><td>IP地址:</td><td>端口:</td></tr>
+		<tr>
+			<td><input id="HostIP" type="text" name="HostIP" value="{{ip}}"></td>
+			<td><input id="HostPort" type="text" name="HostPort" value="{{port}}"></td>
+		</tr>
+		
+		<tr><td>连接用户:</td><td>密码:</td></tr>
+		<tr>
+			<td><input id="HostUser" type="text" name="" value="{{user}}"><input id="HostUser_e" name='HostUser_e'  type="hidden">
+			
+			</td>
+			<td><input id="HostPassword" type="password" name=""><input id="HostPassword_e" name='HostPassword_e'  type="hidden"></td>
+		</tr>
+		
+		<tr>
+			<td>{{sudocheckbox|safe}}</td>
+			<td>{%include "includes/hostgroupselect.html"%}</td>
+
+		</tr>
+		
+		<tr><td  colspan=2>描述:</td><td></td></tr>
+			<tr>
+				<td  colspan=2><textarea style="height:80px" name='HostDescribe' value="{{describe}}">{{describe}}</textarea></td><td></td>
+			</tr>
+			
+	</table>
+	</form>
+
+</div>
+<hr>
+
+<div id="Response">
+</div>
+<script  >
+ $(function() {
+
+$("button").button()
+setMaxDigits(131);
+$(".ajax_{{Random}}").click(function(){
+	var Html=$(this).html()
+	var Ip=$("#HostIP").val()
+	var myDialog = art.dialog.through;//穿越框架
+	myDialog=myDialog({padding: 1,title:Ip,content:Html+"中..."+"<img src='/static/images/loading1.gif' style='height:25px'><br><br>ps:时间过长才叉我哦!",lock:true,esc:false})
+	
+	var ajaxurl=$(this).attr("ajaxurl")
+	var rsa_n=$.ajax({
+	url:ajaxurl,data:'action=GetMePublickey',async:false,type:'post',beforeSend:'',});
+	rsa_n=rsa_n.responseText
+	var loginname=$('#HostUser').val();
+	var password=$('#HostPassword').val();
+	var key = new RSAKeyPair("10001", '', rsa_n); 
+	loginname = encryptedString(key, loginname);
+	password = encryptedString(key, password);
+	$('#HostUser_e').val(loginname)
+	$('#HostPassword_e').val(password)
+	
+	$.ajax({ 
+		async:false,
+		url: ajaxurl,
+		data: $('#form_{{Random}}').serialize(), 
+		type: "post", 
+		cache : false, 
+		beforeSend:'',
+		error:function(x){
+		myDialog.content(x.responseText+'<h3>发生错误！</h3>'+data).unlock()
+		},
+		success:function(data){
+			myDialog.content(data).follow(this).unlock()
+		},
+		})
+})
+});
+</script>
+</body>
+</html>

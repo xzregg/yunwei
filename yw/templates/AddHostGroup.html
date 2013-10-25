@@ -1,0 +1,19 @@
+<html>
+<head>
+{%include "jscss/loadbasejs.html"%}
+</head>
+<body>
+{%include "ajaxbutton.html"%}
+ <form id ="form_{{Random}}" action="" method='post' class="pull-right">
+ <table>
+	<th></th><th></th>
+      <tr><td><label>主机组名</label></td><td><input  name='hostgroupname' class="input-small" type="text"></td></tr>
+	  <tr><td>描述<td  colspan=3> <textarea style="height:80px" name='HostDescribe'></textarea></td><td></td><td></td></tr>
+</table>
+
+ </form>
+<hr>
+{%include "ajaxjs.html"%}
+{{ret}}
+</body>
+</html>

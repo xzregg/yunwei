@@ -1,0 +1,11 @@
+﻿
+<div id="viewsaction_{{Random}}">
+	<form id="form_{{Random}}">
+	{%include "ajaxbutton.html"%}
+	{%include "ajaxjs.html"%}
+	<br>
+	{%for h in Selects%}
+		<input type="checkbox" name="checkbox" value="{{h}}" checked="true" ><label>{{h}}</label><br>
+	{%endfor%}
+	</form>
+</div>

@@ -1,0 +1,27 @@
+﻿<style>
+#BeforeCMD_{{Random}}{width:300px}
+#AfterCMD_{{Random}}{width:300px}
+</style>
+		<div id="tab_{{Random}}" >
+			<form id="form_{{Random}}">
+			{%include "ajaxbutton.html"%}
+			{{Message}}
+
+		<br>
+		{% if BeforeCMD %} 
+		<label>读改前运行的命令:</label><input type="text" id="BeforeCMD_{{Random}}" name="BeforeCMD" value="{{BeforeCMD}}">
+		<br>
+		{% endif %}
+		<label>修改后运行的命令:</label><input type="text" id="AfterCMD_{{Random}}" name="AfterCMD" value="{{AfterCMD}}">
+		<br>
+		<span id="span_{{Random}}">以下内容修改方式：
+			<input type="radio" id="edittype_0_{{Random}}" name="edittype" value="write" checked="checked" ><label for="edittype_0_{{Random}}">覆盖</label>
+			<input type="radio" id="edittype_1_{{Random}}" name="edittype" value="append"  ><label for="edittype_1_{{Random}}">追加</label>
+		</span>
+		<textarea id="FileObjText_{{Random}}" name='FileObjText' style="width:500px;height:500px;font-size:12px">{{FileObjText}}</textarea>
+		<form>
+		</div>
+
+{%include "ajaxjs.html"%}	
+
+

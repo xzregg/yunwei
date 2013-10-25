@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+{%include "jscss/loadbasejs.html"%}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{{Title}}</title>
+
+<style type="text/css">
+*{ padding:1px;}
+body {
+ font-family: Verdana, Arial;
+ padding:1px;
+ font-size: 12px;
+}
+
+#left {
+ display:none;
+ float: left;
+ width: 0px;
+ height:500px;
+ }
+#right {
+  //margin-left:2px;
+  height:100%;
+}
+
+div {
+ //background-color: #eee;
+ //border: dotted 1px green;
+ padding:1px;
+}
+</style>
+
+</style>
+</head>
+<body style="width:100%;margin:0 auto;overflow-y:hidden;overflow-x:hidden">
+<div id="main">
+<div id="top">{%include "admin_top.html"%}</div>
+<div id="mid">
+<div id="left"></div>
+<div id="right" >
+	<iframe  src='?action=getinfo' id="rightframe" name="rightframe" width="100%" height="85%" frameborder="0" marginwidth="0" marginheight="0" scrolling="auto"></iframe>
+</div>
+</div>
+<div id="end">{% include 'admin_end.html' %}</div>
+</div>
+<script >
+
+function frameresize(){
+	$("#rightframe").height($(document).height()*0.82)
+	//var h=$("#rightframe").contents().find("body").height()
+   // $("#rightframe").height(h)  
+}
+frameresize()
+window.onresize=frameresize
+var hh=0
+function resize(){
+	var h=$("#rightframe").contents().find("body").height()+30
+	if (hh==0){hh=h}
+	if (h>=hh+100 || h<=hh-100){hh=h}
+	if (hh<=600){hh=600}
+     $("#rightframe").height(hh+10)  
+	  }
+      
+//window.onscroll=resize
+setInterval("resize()",2000)  
+	  
+</script>
+</body>
+</html>

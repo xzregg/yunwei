@@ -1,0 +1,109 @@
+
+<link rel="stylesheet" href="/static/css/menu.css" />
+<div id="daohang">
+	<ul>
+	{% for ul,li in menu %}
+		{% ifequal li|length 1 %}
+			<li class="tab dropdown"><a target="rightframe" href="{{li.0.0}}" class="MenuItems tablink">{{li.0.1}}</a>
+		{% else %}
+			<li class="tab dropdown"><a target="" href="#" class="tablink">{{ul}}</a>
+				<ul class="subnav">
+				{% for l in li %}
+					<li><a class="MenuItems" target="rightframe" href="{{l.0}}">{{l.1}}</a></li>
+				{% endfor %}
+				</ul>
+			</li>  
+		{% endifequal  %}
+	{% endfor %}
+	</ul>
+	
+	﻿<span style="font-size:14px;color:white;display: inline;float:right;padding:8px 0 0 0;margin-right:2px "> 
+	<span id="dd">{{username}}</span>|
+	<span><a href="/admin/views/EditUserMe/?uid={{uid}}&user={{loginname}}">修改信息</a></span>|
+	<span><a href="/logout/">登出</a></span>
+	</span>
+	<script>
+
+	  $('#dd').tooltip({
+		        content:'ip:{{loginip}}<br>{{logintime}}<br>{{U_P}}',
+		        //showEvent: 'click',
+		        onShow: function(){
+			    $(this).tooltip('tip').css({width:'200px'});
+		            var t = $(this);
+		            t.tooltip('tip').unbind().bind('mouseenter', function(){
+		                t.tooltip('show');
+		            }).bind('mouseleave', function(){
+		                t.tooltip('hide');
+		            });
+		        }
+		    });
+	</script>
+
+</div>
+<br>
+<div >历史:<span id="HistoryMenu"></span></div>
+<br>
+	
+<style>
+*{margin:0;padding:0;}
+#sidebar{width:100px;background:#fff9ef;height:auto;border:1px solid green;margin:110px 0;padding:0px;}
+//#sidebar h3{padding-left:10px;}
+.sidelist{position:relative;z-index:1;height:32px;width:132px;}
+.sidelist span h3{;position:relative;z-index:2;height:32px;line-height:32px;font-size:14px;font-weight:normal;}
+.sidelist span h3 a{font-size:14px;text-decoration:none;display:block;width:auto;height:auto;color:#000;}
+.sidelist span h3 a:hover{color:red;font-weight:bold;}
+.i-list{display:none;position:absolute;z-index:1;left:110px;top:-20px;width:180px;padding:15px;background:#fff9ef;border:1px solid green;}
+.i-list ul li{width:60px;float:left;list-style:none;line-height:32px;heignt:32px;}
+.i-list ul li a{color:#000;text-decoration:none;font-size:12px;}
+.i-list ul li a:hover{text-decoration:underline;color:red;}
+
+.hover{border:1px solid green;border-right:0;width:80px;background:#fff9ef;}
+</style>
+	
+	
+<!--div id="sidebar">
+{% for k,v in menu.items %}
+    <div class="sidelist">
+	    <span><h3><a target="" href="#">{{k}}</a></h3></span>
+		<div class="i-list">
+		    <ul>
+				{% for m in v %}
+					<li><a class="MenuItems" target="rightframe" href="{{m.0}}">{{m.1}}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+{% endfor %}
+</div -->
+	
+	
+<script  >
+$(document).ready(function(){
+
+    $('.sidelist').mousemove(function(){
+	$(this).find('.i-list').show();
+	$(this).find('h3').addClass('hover');
+	});
+	$('.sidelist').mouseleave(function(){
+	$(this).find('.i-list').hide();
+	$(this).find('h3').removeClass('hover');
+	});
+
+	var MenuNum=0
+	$("#daohang .MenuItems").click(function(){
+	if(MenuNum<6){
+		var a=$("#HistoryMenu").html()
+
+		if (a.indexOf($(this).html())<0){
+				$('#HistoryMenu').append(' » '); 
+				$(this).clone().appendTo('#HistoryMenu');
+				MenuNum+=1
+				}
+	}else{
+		$('#HistoryMenu').html('');
+		$(this).clone().appendTo('#HistoryMenu');
+		MenuNum=0
+		}
+	})
+});
+</script>

@@ -1,0 +1,73 @@
+{%include "windowopenjs.html"%}
+<script>
+
+$(function(){
+$(".ajax_{{Random}}:button" ).button()
+$(".ajax_{{Random}}").click(function(){//动作
+if ($(this).attr("follow")=='center'){var This='';var Fixed=false}else{var This=this;var Fixed=true}
+var closesec=$(this).attr("closesec")
+var Confirm=$(this).attr("confirm")
+var Title=$(this).html()
+var ajaxurl=$(this).attr("ajaxurl")
+var method=$(this).attr("method")
+var Data=$('#form_{{Random}}').serialize()
+if (Confirm){result = confirm(Confirm+"\n确定吗?")}else{result=true }
+if (result){
+	if (method=="open"){
+		art.dialog.open(ajaxurl,{
+				padding: "1px",
+				//follow:This,
+				id:Title,
+				title: Title,
+				fixed: false,
+				//top:'50%',
+				//htight:"70%",
+			});
+		}else if (method=="submit"){
+			$('#form_{{Random}}').attr({"action":ajaxurl})
+			$('#form_{{Random}}').attr({"method":'post'})
+			$('#form_{{Random}}').submit()//.remove()
+		}else if (method=="windowopen"){
+            openwindow_{{Random}}(ajaxurl,"{{Random}}",Data,0.6,0.6)
+		}else{
+        //alert(document.body.scrollTop)
+					myDialog_{{Random}} = art.dialog({id:Title,
+                                                top:'25%',
+                                                left:'50%',
+												fixed: Fixed,
+												follow:This,
+												title: Title,
+												padding:"1px",
+												content:"<img src='/static/images/loading1.gif' style='height:25px'>",
+												esc:true
+												})
+					$.ajax({ 
+						url: ajaxurl, 
+						data: Data,
+						type: "post", 
+						cache : false, 
+						error:function(x) {
+                            myDialog_{{Random}}.content(x.responseText)
+                            },
+						success: function(data,statuc,x) {
+                            myDialog_{{Random}}.close()
+                            art.dialog({id:Title,
+                                                top:'25%',
+                                                left:'50%',
+												fixed: Fixed,
+												follow:This,
+												title: Title,
+												padding:"1px",
+												content:'<div style="font-size:12">'+data+'</div>',
+												esc:true,
+                                                time:closesec
+												})
+						} 
+					})
+			}			
+	
+}
+})
+
+});
+</script>

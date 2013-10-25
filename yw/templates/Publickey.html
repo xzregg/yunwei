@@ -1,0 +1,32 @@
+﻿
+
+
+		<div id="Pubkey_{{Random}}-tabs" >
+			<ul>
+				<li><a href="#tabs_{{Random}}-1">分发公钥</a></li>
+				<li><a href="#tabs_{{Random}}-2">帮助</a></li>
+			</ul>
+			<div id="tabs_{{Random}}-1" >
+				<br>
+				{%include "ajaxbutton.html"%}
+				<br>
+				<form id="form_{{Random}}">
+					{%for h in Selects%}
+						<input type="checkbox" name="checkbox" value="{{h}}" checked="true" ><label>{{h}}</label><br>
+					{%endfor%}
+				</form>
+			</div>
+			<div id="tabs_{{Random}}-2">
+				
+				<span>暂无</span>
+			</div>
+		</div>	
+
+
+
+{%include "ajaxjs.html"%}
+<script>
+ $(function() {
+$( "#Pubkey_{{Random}}-tabs" ).tabs()
+})
+</script>

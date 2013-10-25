@@ -1,0 +1,44 @@
+
+<script>
+
+function openwindow_{{Random}}(url,name,Data,iWidth,iHeight)
+ {
+  var url;                                 //转向网页的地址;
+  var name;                           //网页名称，可为空;
+  var iWidth=parseInt(window.screen.availWidth * iWidth);                          //弹出窗口的宽度;
+  var iHeight=parseInt(window.screen.availHeight * iHeight);   
+  //alert(iWidth+" "+iHeight)                    //弹出窗口的高度;
+  var iTop = parseInt((window.screen.availHeight-iHeight)/2);       //获得窗口的垂直位置;
+  var iLeft = parseInt((window.screen.availWidth-iWidth)/2);           //获得窗口的水平位置;
+  //alert(iTop+" "+iLeft)    
+  var Window_{{Random}}=window.open('about:blank',name,'height='+iHeight+',,innerHeight='+iHeight+',width='+iWidth+',innerWidth='+iWidth+',top='+iTop+',left='+iLeft+',scrollbars=yes');
+    //,toolbar=no,menubar=no,scrollbars=yes,resizeable=no,location=no,status=no');
+ 
+	var tempForm=document.createElement("form");  
+	tempForm.id="tempForm1";
+	tempForm.method="post";   
+	tempForm.action=url; 
+	tempForm.target=name; 
+
+	//console.dir(Data)
+	Data+='&_Random='+parseInt(Math.random()*1000000000000)
+	var kv=Data.split('&')
+	for (var i in kv){
+		var _kv = kv[i].split('=')
+  		var hideInput = document.createElement("input");  
+  		hideInput.type="hidden";
+  		hideInput.name= decodeURIComponent(_kv[0])
+  		hideInput.value= decodeURIComponent(_kv[1]).replace(/\+/g, ' ')
+  		tempForm.appendChild(hideInput);   
+	}
+ 	
+ 	 	
+    //tempForm.addEventListener("onsubmit",function(){ alert(23);openWindow(name); });
+    document.body.appendChild(tempForm);  
+  	tempForm.submit();
+    document.body.removeChild(tempForm);
+ 
+}
+
+
+</script>

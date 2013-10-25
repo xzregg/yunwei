@@ -1,0 +1,39 @@
+<style>
+#PermissionTable{width:auto;font-size:12px}
+</style>
+
+<div id="div_{{Random}}">
+<table  id="PermissionTable"  border="1" cellpadding="0" cellspacing="0">
+	{% for k,v in Views.items %}
+	<tr>
+		<td><div style="float:left"><input class="checkall" type='checkbox' name='checkall' value='{{k}}'/>{{k}}</div></td>
+		<td class="{{k}}" >
+		{%for p in v%}
+			{{p|safe}}
+		{%endfor%}
+		</td>
+	</tr>
+	{% endfor %}
+	
+</table>
+</div>
+
+<script charset="utf-8" >
+$("#div_{{Random}} .checkall").click(function(){
+	var cls=$(this).val()
+	var ck =false
+	if ($(this).attr("checked")){var ck =true}
+	$('.'+cls).find("input[name=checkbox]").each(function(){
+	$(this).attr({"checked":ck})
+})})
+
+$("#div_{{Random}} input:checkbox").click(function(){
+	if($(this).attr("checked")){
+		$(this).parent("div").css("color","blue")
+	}else{
+		$(this).parent("div").css("color","black")
+		}
+})
+</script>
+
+

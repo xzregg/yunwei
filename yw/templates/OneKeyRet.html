@@ -1,0 +1,18 @@
+﻿
+<div id="Ret_tabs" >
+	<ul>
+	{% for T in Ret  %}{#增加tab#}
+		<li><a href="#{{T.0}}_tabs">第{{T.0}}步</a></li>
+	{% endfor %}
+	</ul>
+	{% for T in Ret %}
+	<div id="{{T.0}}_tabs">
+		{{T.1|safe}}
+	</div>	
+	{%endfor%}
+</div>
+
+
+<script type="text/javascript">
+	$( "#Ret_tabs" ).tabs()
+</script>

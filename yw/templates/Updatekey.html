@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>增加山海传说ServerConfig</title>
+<link rel="stylesheet" href="/media/css/jquery-ui.css" />
+<script src="/media/js/jquery-1.8.1.min.js"></script>
+<script src="/media/js/jquery-ui.js"></script>
+<script src="/media/js/ajaxfileupload.js"></script>
+</head>
+<body style="width:100%;margin:0 auto">
+<form enctype="multipart/form-data" method="POST" action="">
+<input type="file" name="file" id="uploadfile"/><input type="button" value="上传文件" id="upfile">
+</form>
+<form id="AddGameHost">
+<label>IP地址</label><input type="text" name="ip" id ="ip" style="width:300px"><label>(1.1.1.1;2.2.2.2)</label><br>
+<label>CDB地址</label><input type="text" name="db" id ="db" style="width:300px"><label>(CDBip port user password)</label><a href="javascript:void(0)" id="addcdb">增加一个CDB选项</a><br>
+<div id="cdb">
+</div>
+<input type="button" value="增加游戏服务器" id="addgs"><input type="button" value="查看所有GateWay进程端口" id="show">
+</form>
+<a href="/download/ServerConfig_Wai.py">下载ServerConfig_Wai</a><a href="/download/DBServerConfig.py">下载DBServerConfig</a>
+<hr>
+<div id="response">
+{{message|safe}}
+</div>
+{#request#}
+<script type="text/javascript">
+
+$("#addcdb").click(function(){
+$("#cdb").append('<label>CDB地址</label><input type="text" name="db" id ="db" style="width:300px"><label>(CDBip port user password)</label><br>')
+})
+ $("#addgs").click(function(){
+ $.ajax({ 
+	async:false,
+	url: '',
+	data: $('#AddGameHost').serialize(), 
+	type: "post", 
+	cache : false, 
+	success: function(data) {
+	$("#response").html(data);
+	} 
+	})
+});
+
+
+ $("#show").click(function(){
+ $.post("", { "show":'show'},function(data,status){$("#response").html(data);});
+  });
+
+$("#upfile").click(function(){
+ if  ($("#uploadfile").val()){
+	$.ajaxFileUpload({
+	  url:'',//服务器端程序
+	  secureuri:false,
+	  fileElementId:'uploadfile',//input框的ID
+	  dataType: 'json',//返回数据类型
+	  beforeSend:function(){//上传前需要处理的工作，如显示Loading...
+	  alert('上传开始！');
+	  },
+	  success: function (data, status){//上传成功
+		if(data.success == 1){
+		  $("#response").html(data.data);
+		} else{
+		  alert('上传失败！');
+		}
+	  }
+	  });
+	  //$("#uploadfile").attr({"value":''})
+  }else{
+  alert('没文件啊！')}
+  })
+</script>
+</body>
+</html>

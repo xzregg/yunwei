@@ -1,0 +1,19 @@
+﻿<div id="OneKeyresponse">
+{%include "ajaxbutton.html"%}
+
+	<form id="form_{{Random}}">
+	{%if RunOneKeyCheck %}
+       <input name='check' class="input-small" type="text" placeholder="验证">
+	   	   <img onclick="this.setAttribute('src','/get_check_code_image/?nocache='+Math.random());" src="/get_check_code_image/?nocache={{Random}}" alt="CheckCode"/> 
+	{% endif %}
+	
+
+	</form>
+	<hr>
+	<font size=2>{{ OneKeyDescribe|safe}}</font>
+</div>
+{%include "ajaxjs.html"%}
+<script >
+$(".ajax_{{Random}}").button()
+</script>
+

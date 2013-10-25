@@ -1,0 +1,117 @@
+﻿<div id="script_div"  style>
+	<form id="script_form">
+	<div id="Rtop" style="clear: both;width:100%;height:100%">
+		<input id="runscript" type="button" value="执行">
+		<label>连接超时</label><select id="cmdtimeout" name="cmdtimeout">
+				<option value ="10">10</option>
+				<option value ="30">30</option>
+				<option value ="60">60</option>
+		</select>
+		<label>线程</label><select id="thread" name="thread">
+				<option value ="1">是</option>
+				<option value ="0">否</option>
+		</select>
+		<label>后台</label><select id="daemon" name="daemon">
+				<option value ="0">否</option>
+				<option value ="1">是</option>
+		</select>
+		</select>
+				<label>头信息</label><select id="sshtitle" name="sshtitle">
+				<option value ="1">是</option>
+				<option value ="0">否</option>
+
+		</select>
+		<label>程序</label><input id="scripttype" type='text' name='scripttype' style="width:80px">
+
+		<div id="script-tabs" style="height:250px" >
+			<ul>
+				<li><a href="#tabs-1">脚本列表</a></li>
+				<li><a href="#tabs-2">手动写</a></li>
+			</ul>
+			<div id="tabs-1" >
+				{% include "scriptlist.html"%}
+			</div>
+			<div id="tabs-2">
+				<textarea id="scripttext" style="height:200px;width:540px" name='script'></textarea> 
+			</div>
+		</div>	
+		
+	</form>
+</div>
+</head>
+<body>
+		
+<script type="text/javascript">
+	$(function() {
+		$( "#script-tabs" ).tabs();
+	});
+
+$("#checkbox").click(function(){
+if($(this).attr("checked")){
+$("td lable").show()
+}else{
+$("td lable").hide()
+}
+})
+
+/*判断是否json
+	var isJson = function(obj){
+		var isjson = typeof(obj) == "object" && Object.prototype.toString.call(obj).toLowerCase() == "[object object]" && !obj.length;
+		return isjson;
+	}
+*/
+
+function DisplayRet(id,data){$("[hid='"+id+"']").html(data)}
+
+$("#runscript").click(function(){
+	if ($('#scripttext').val()){
+		var Value=$('#scripttext').val()
+		result = confirm("确定运行 吗?")
+		if (result){
+				var ret=[];var i=1;
+				var myDialog = art.dialog({width:"30%",height:'30%',content:"<h5>命令("+")执行中..."+"<img src='/media/images/loading1.gif' style='height:25px'></h5><br><br>ps:时间过长才叉我哦!",lock:true,esc:false})
+				$(".checkbox").each(function(){
+					if ($(this).attr("checked")=="checked"){
+						var hid=$(this).val()
+						hid=hid.split('__')
+						hid=hid[hid.length-1]
+						DisplayRet(hid,"["+i+"]命令( "+" )执行中...")
+						ret.push(hid)
+						i++
+						}})
+				function AjaxRet(data) {
+							var j=$.parseJSON(data)
+							if (j.msg){
+								alert(j.msg)
+							}
+							$.each(j,function(k,v){
+								DisplayRet(ret[k-1],v)
+									})
+							myDialog.content('<h3>命令执行完毕！</h3>').lock().time(1);	
+							}				
+				function AjaxPost(){	
+				var data=$('form:visible').serialize()
+				//alert(data)
+						$.ajax({ 
+						type: "post", 
+						url: "{{request.path_info}}", //本路径
+						dateType: "json", 
+						async:true,//同步模式
+						data: data,
+						beforeSend:'',
+						cache : false, 
+						error:function(){
+							alert('错误了！')
+							myDialog.content('<h3>发生错误！</h3>').lock().time(1)
+							},
+						success:AjaxRet,
+					})
+				}
+				setTimeout(AjaxPost,50)
+			}
+			
+	}else{alert("没有命令！")}	
+});
+
+
+</script>

@@ -1,0 +1,99 @@
+<html>
+<head>
+<script src="/static/js/jquery-1.8.0.min.js"></script>
+{%include "jscss/jquery-ui.html"%}
+{%include "jscss/rsajs.html"%}
+</head>
+<body id="body_{{Random}}">
+<div id="logindiv_{{Random}}" style="display:none">
+ <form id="login_form_{{Random}}" action="" method='post' class="pull-right">
+ <input id="a_{{Random}}" name="loginname" type="hidden" >
+ <input id="b_{{Random}}" name="password" type="hidden" >
+  <table>
+    <tr>
+      <td>
+      <input id="loginname_{{Random}}"   type="text" placeholder="用户名">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input id="password_{{Random}}" type="password" placeholder="密码">
+      </td>
+    </tr>
+    <tr> 
+       <td>
+       <input name='check' class="input-small" type="text" placeholder="验证">
+	   	   <img onclick="this.setAttribute('src','/get_check_code_image/?nocache='+Math.random());" src="/get_check_code_image/" alt="CheckCode"/> 
+       </td>
+    <tr>
+       <td>
+	    </form>
+       <button id="login_{{Random}}" class="btn" type="button">确定</button>
+
+       </td>
+    </tr>
+  </table>
+
+<hr>
+<div id="LoginResponse_{{Random}}" style="height:140px">
+{{msg|safe}}
+</div>
+
+<div style="text-align:center;">©2013 Xzr</div>
+
+</div>
+<style>
+/**去除jquery ui close按钮**/
+#body_{{Random}} .ui-dialog-titlebar-close{
+    display: none;
+  }
+ </style> 
+<script >
+$(document).ready(function(){
+
+$('#logindiv_{{Random}}').dialog({
+title:'{{Title}} 登录',width:400,top:0,bgiframe : true,modal:true,draggable:false,resizable:false})
+
+document.onkeydown = function (e) {
+var theEvent = window.event || e;
+var code = theEvent.keyCode || theEvent.which;
+if (code == 13) {
+$("#login_{{Random}}").click();
+}
+} 
+
+
+
+function Loading() {
+$("#LoginResponse_{{Random}}").html("登录中<img src='/static/images/loading1.gif' style='height:25px'>")
+}
+
+$("#login_{{Random}}").click(function(){
+setMaxDigits(131);
+ $.ajax({ 
+	async:false,
+	beforeSend:Loading,
+	url: "/login/",
+	data: "action=GetMePublickey", 
+	type: "post", 
+	cache : false, 
+	success: function(data) {
+		var rsa_n=data;
+    var loginname=$('#loginname_{{Random}}').val();
+		var password=$('#password_{{Random}}').val();
+		var key = new RSAKeyPair("10001", '', rsa_n); 
+		loginname = encryptedString(key, loginname);
+		password = encryptedString(key, password);
+		$('#a_{{Random}}').val(loginname)
+		$('#b_{{Random}}').val(password)
+		$("#login_form_{{Random}}").submit()
+		}
+	})
+	
+})
+
+
+})
+</script>
+</body>
+</html>

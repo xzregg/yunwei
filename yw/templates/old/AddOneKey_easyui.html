@@ -1,0 +1,161 @@
+﻿<html>
+<head>
+{%include "jscss/loadbasejs.html"%}
+
+</head>
+<body style="font-size:12;width:700px;">
+{%include "includes/ajaxbutton.html"%}
+
+<div id="addonekey_div">
+	<form method="post">
+	{{form|safe}}
+	<label>增加命令:</label><a id="AddOneKeyItem" href="javascript:void(0);">增加一项</a><br>
+	{%for u in OneKeyUrl%}
+	<div class="OneKeyItem">
+		<input type="text" class="onekeyurl" name="onekeyurl" value="{{u}}" style="width:450px">
+		<a href="javascript:void(0);" class="EditOneKeyItem">编辑</a>
+		<a href="javascript:void(0);" class="DelOneKeyItem">删除</a>
+	</div>
+	{%endfor%}
+	</form>
+</div>
+
+<div id="_Item"  >
+	<span class="radio">
+				<input type="radio" id="ChoiceCmd" name="radio" /><label for="ChoiceCmd">命令</label>
+				<input type="radio" id="ChoiceScript" name="radio" /><label for="ChoiceScript">脚本</label>
+	</span>
+	<form id="Item_form">
+	<div id="Rtop" style="clear: both;width:100%;height:100%">
+		<label>连接超时</label><select id="cmdtimeout" name="cmdtimeout">
+				<option value ="10">10</option>
+				<option value ="30">30</option>
+				<option value ="60">60</option>
+		</select>
+				<label>线程</label><select id="thread" name="thread">
+				<option value ="5">5</option>
+				<option value ="50">50</option>
+				<option value ="200">200</option>
+		</select>
+		</select>
+				<label>头信息</label><select id="sshtitle" name="sshtitle">
+				<option value ="0">否</option>
+				<option value ="1">是</option>
+		</select>
+		{%include "includes/hostgroupselect.html"%}
+		<br>
+		<span id="scriptopt">
+		<label>程序</label>
+			<input id="scripttype_{{Random}}" type='text' name='scripttype' style="width:50px">
+		<label>后台</label>
+				<select id="daemon_{{Random}}" name="daemon">
+				<option value ="0">否</option>
+				<option value ="1">是</option>
+		</select>
+		</span> 
+		<br>
+		<input id="CMDorScriptText" style="height:30px;width:580px" name='CMD' value="" >
+	</div>
+	</form>
+</div>
+
+
+<script >
+ $(function() {
+
+$("select").combobox()
+ 
+$("#scriptopt").hide()
+$('#_Item').dialog({closed:true})
+ 
+ $("#ChoiceCmd").click(function(){
+	$("#scriptopt").hide()
+	$("#CMDorScriptText").attr({"name":"CMD"})
+})
+ $("#ChoiceScript").click(function(){
+	$("#scriptopt").show()
+	$("#CMDorScriptText").attr({"name":"script"})
+})
+
+function bindingOneKeyItem(){
+$(".DelOneKeyItem").click(function(){
+	if($(".DelOneKeyItem").size()!=1){
+		$(this).parent('.OneKeyItem').remove()
+	}
+})
+
+
+
+$(".EditOneKeyItem").click(function(){
+	var prev=$(this).prev()
+	var OnoKeyUrl=prev.val()
+	if (OnoKeyUrl.indexOf("script=")>0){
+		 $("#ChoiceScript").click()
+	}else{
+		 $("#ChoiceCmd").click()
+	}
+	
+	strs=OnoKeyUrl.split("&")
+	if(strs.length>1){
+	for(var i=0;i<strs.length;i++){
+		var a=strs[i].split('=')
+		var b=decodeURIComponent(a[1].replace(/\+/g, ' '))
+		$("[name="+a[0]+"]").val(b)
+		}
+	}else{$("#CMDorScriptText").val('')}
+
+	
+	$("#_Item").dialog({
+					closed:false,
+                    title: "编辑",
+                    width:610,
+                    buttons:[{
+						text:'确认',
+						handler:function(){
+							prev.val($("#Item_form").serialize())
+							 $("#_Item").dialog("close");
+						 }
+					},{
+						text:'关闭',
+						handler:function(){$("#_Item").dialog("close");}
+					}]
+
+                });
+			
+})
+}
+
+$("#AddOneKeyItem").click(function(){
+	$('.OneKeyItem:last').clone().appendTo('#addonekey_div form');
+	$(".DelOneKeyItem").unbind()
+	$(".EditOneKeyItem").unbind()
+	$('.onekeyurl:last').val('')
+	bindingOneKeyItem()
+})
+bindingOneKeyItem()
+
+
+
+$(".ajax").click(function(){
+var ajaxurl=$(this).attr("ajaxurl")
+var myDialog = art.dialog({width:"30%",height:'30%',content:"命令执行中<img src='/media/images/loading1.gif' style='height:25px'>",lock:true,esc:false})
+ $.ajax({ 
+	async:false,
+	url: ajaxurl,
+	data: $('form:visible').serialize(), 
+	type: "post", 
+	cache : false, 
+	beforeSend:'',
+	error:function(data){
+	myDialog.content('<h3>发生错误！</h3>'+data).unlock()
+	},
+	success: function(data) {
+		myDialog.content(data)		
+	} 
+})
+})
+
+})
+</script>
+</body>
+</html>

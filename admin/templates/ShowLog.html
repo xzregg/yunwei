@@ -1,0 +1,86 @@
+<html>
+<head>
+{%include "jscss/loadbasejs.html"%}
+
+<style>
+td {
+padding:0px;
+font-size:12px;
+}
+</style>
+</head>
+<body style="padding: 0px; margin: 0px;font-size:12px;" >
+
+<div>
+<form action="?page=1" method="post" id="{{T.tablename}}_f">
+{%include "ajaxbutton.html"%}
+{%include "ajaxjs.html"%}
+	<div align="center">
+				  时间:<input class='dt' type="text" name="stime" value="{{Stime}}">至
+				  <input  class='dt' type="text" name="etime" value="{{Etime}}">
+				  标题或内容筛选：
+				  <input name="search" type="text" id="info" value="{{Search}}">
+				  <input type="submit" value="搜索">
+	 </div>
+	{{T.html|safe}}
+</form>
+</div>
+<br>
+<div align="right">
+每页 <font color="#FF0000">{{ItemNum}}</font> 条
+&nbsp;共 <font color="#FF0000">{{TolItem}}</font> 条记录
+&nbsp;第 <font color="#FF0000">{{Page}}</font> 页 
+&nbsp;共 <font color="#FF0000">{{TolPage}}</font> 页
+<a href="?page=1&search={{Search}}&stime={{Stime}}&etime={{Etime}}">首页</a>&nbsp;
+<a href="?page={{PreviousPage}}&search={{Search}}&stime={{Stime}}&etime={{Etime}}">上一页</a>&nbsp;
+<a href="?page={{NextPage}}&search={{Search}}&stime={{Stime}}&etime={{Etime}}">下一页</a>&nbsp;
+<a href="?page={{LastPage}}&search={{Search}}&stime={{Stime}}&etime={{Etime}}">最后页</a>
+<input name="mynumpage" type="text" id="mynumpage" value="{{Page}}" size="5">
+<input onclick="location.href='?page='+document.getElementById('mynumpage').value+'&search={{Search}}&stime={{Stime}}&etime={{Etime}}';" type="button" name="Submit" value="Go">
+</div>
+<style>
+
+</style>
+<script charset="utf-8">
+ $(function() {
+		$( ".dt" ).datetimepicker({
+			timeFormat: 'HH:mm:ss',
+			changeMonth: true,//selectMonth
+			changeYear: true,
+			showButtonPanel: true,
+
+		});
+
+
+		$("#{{T.tablename}} tbody tr").click( function( e ) {
+        if ( $(this).hasClass('row_selected') ) {
+            $(this).removeClass('row_selected');
+        }
+        else {
+            ot{{T.tablename}}.$('tr.row_selected').removeClass('row_selected');
+            $(this).addClass('row_selected');
+        }
+		});	
+		
+		var ot{{T.tablename}} = $('#{{T.tablename}}').dataTable( {
+					"bStateSave": false, //保存状态到cookie ******很重要 ， 当搜索的时候页面一刷新会导搜索的消失。使用这个属性设置为true就可避免了 
+					"bProcessing": true, //是否显示正在处理的提示 
+					//"iDisplayLength":50,//默认每页显示的记录数
+					//"aLengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]],
+					"bPaginate": false, // 是否使用分页
+					//"sPaginationType": "full_numbers",//分页样式
+					"height": "14px",
+					"bAutoWidth": false,//列的宽度会根据table的宽度自适应 
+					"bSortClasses":true,
+					'bSort':true,
+					"aaSorting": [[ 0, "desc" ]],
+					{% if nosort %}
+					"aoColumnDefs": [ { "bSortable": false, "aTargets": [ {{nosort.1}} ] }]//不排序
+					{% endif %}
+				} )	
+				
+
+});				
+</script>
+</body>
+</html>

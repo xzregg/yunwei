@@ -1,0 +1,139 @@
+<style>
+/*搜索框大小*/
+*{font-size:12px;padding:0}
+.datatables_length {
+width: 20%;
+float: left;
+}
+.datatables_filter {
+display:inline;
+width: 80%;
+float: right;
+text-align: right;
+}
+.datatables_filter input{
+width:80%;
+}
+#{{T.tablename}}_div table td{text-align:center}
+.text_left{text-align:left}
+.text_right{text-align:right}
+</style>
+<br>
+
+<div id="{{T.tablename}}_div">
+{%include "ajaxbutton.html"%}
+{% if hidecolume%}
+	<br><br>
+	{% for h in hidecolume %}
+		{{ h|safe}}
+	{% endfor %}
+{% endif %}
+{%include "includes/hostgroupselect.html"%}
+<br><br>
+<form action="" method="post" id="form_{{Random}}">
+	{{T.html|safe}}
+</form>
+</div>
+
+{%include "ajaxjs.html"%}
+<script charset="utf-8">
+$(function() {
+$(".HostWebssh").click(function(){
+var URL=$(this).attr('url')
+window.open (URL,URL,'height=400,width=500') 
+})
+
+$(".checkall").click(function(){//全选-----
+	var ck =false
+	if ($(this).attr("checked")){var ck =true}
+	$("table:visible").find("input[name=checkbox]").each(function(){
+	$(this).attr({"checked":ck})
+})})
+
+{%if EditAjaxUrl%}
+			function {{T.tablename}}jedit(){
+				$('.EditTD').editable('{{EditAjaxUrl}}?tablename={{T.tablename}}',
+				{
+				indicator : "<img src='/media/images/loading1.gif' style='height:25px'>",
+				type   : 'textarea',
+				select : true,
+				submit : 'OK',
+				cancel : 'cancel',
+				//cssclass : "editable",
+				"callback": function( sValue, y ) {
+						var aPos = ot{{T.tablename}}.fnGetPosition( this );
+						ot{{T.tablename}}.fnUpdate( sValue, aPos[0], aPos[1] );
+					},
+				"submitdata": function ( value, settings ) {
+						var k=ot{{T.tablename}}.fnGetPosition( this )[2]
+						$("table:visible th:eq("+k+")").attr("class")
+						return {
+						"row": this.parentNode.getAttribute('id'),//获取到行的id
+						"column": $("table:visible th:eq("+k+")").attr("id")
+						};
+					},
+					"height": "100%",
+					"width": "100%"
+				} );
+				}
+			$(document).ready({{T.tablename}}jedit);
+			$('#tab_{{T.tablename}} td').click({{T.tablename}}jedit());
+{%endif%}
+	
+		$("#{{T.tablename}} tbody tr").click( function( e ) {
+        if ( $(this).hasClass('row_selected') ) {
+            $(this).removeClass('row_selected');
+        }
+        else {
+            ot{{T.tablename}}.$('tr.row_selected').removeClass('row_selected');
+            $(this).addClass('row_selected');
+        }
+		});	
+
+		var ot{{T.tablename}} = $('#{{T.tablename}}').dataTable( {
+					"bStateSave": false, //保存状态到cookie ******很重要 ， 当搜索的时候页面一刷新会导搜索的消失。使用这个属性设置为true就可避免了 
+					"bProcessing": true, //是否显示正在处理的提示 
+					"iDisplayLength":50,//默认每页显示的记录数
+					"aLengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]],
+					"bPaginate": true, // 是否使用分页
+					"sPaginationType": "full_numbers",//分页样式
+					"height": "14px",
+					"bAutoWidth": false,//列的宽度会根据table的宽度自适应 
+					"bSortClasses":false,
+					"oSearch":{
+						"sSearch": "",//默认的框文字
+						"bRegex":true,//支持正则搜索
+					},
+					 "oLanguage": {
+						"sSearch": "正则搜索:",//
+						},
+					{% if nosort %}
+					"aoColumnDefs": [ { "bSortable": false, "aTargets": [ {{nosort.1}} ] }]//不排序
+					{% endif %}
+				} )
+				
+			$("#SelectHostGroup_{{Random}} input").change(function(){
+				ot{{T.tablename}}.fnFilter($(this).val())
+			})
+			$("#SelectHostGroup_{{Random}} select").combobox({
+				onSelect:function(rec){
+				ot{{T.tablename}}.fnFilter(rec.text)}
+			})
+			
+{% if hidecolume%}
+	$(".hidecolumn").click(function(){
+		var column=$(this).attr('cloumn')
+		fnShowHide(column)
+	})
+	$(".hidecolumn").click()
+
+	function fnShowHide( iCol )
+		{
+		/* Get the DataTables object again - this is not a recreation, just a get of the object */
+			var bVis = ot{{T.tablename}}.fnSettings().aoColumns[iCol].bVisible;
+			ot{{T.tablename}}.fnSetColumnVis( iCol, bVis ? false : true );
+		}
+{% endif %}		
+ });			
+</script>
+

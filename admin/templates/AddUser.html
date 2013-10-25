@@ -1,0 +1,91 @@
+<html>
+<head>
+{%include "jscss/loadbasejs.html"%}
+{%include "jscss/rsajs.html"%}
+<style>
+*{font-size:12px}
+
+#userinfo{width:400px;height:300px}
+#register{float:right}
+</style>
+</head>
+<body >
+<div >
+ <form id ="form_{{Random}}" action="" method='post' >
+ <div id="tabs_{{Random}}" >
+		<ul>
+		<li><a href="#userinfo">用户信息</a></li>
+		<li><a href="#userpermission">用户权限</a></li>
+
+		</ul>
+	<div id="userinfo" >
+	 <table >
+		<th></th><th></th>
+		  <tr><td>登录名:</td><td><input  name='loginname'  type="text"></td></tr>
+		  <tr><td>用户名:</td><td><input name='username'  type="text"></td></tr>
+		  <tr><td>联系方式:</td><td><input name='contact'  type="text"></td></tr>
+		  <tr><td>登录密码:</td><td><input id ="passwordA"  type="password" ><input id="b" name='password'  type="hidden"></td></tr>
+		  <tr><td>再次输入:</td><td><input id ="passwordB"  type="password" ></td></tr>
+		  <tr><td></td><td><button  type="button" ajaxurl="" id="register">注册</button></td></tr>
+		
+	</table>
+		
+	</div>
+	<div id="userpermission">
+	{% include "permissiontable.html"%}
+	</div>
+ </form>
+</div>
+
+<script charset="utf-8" >
+ $(function() {
+ 
+$( "#tabs_{{Random}}" ).tabs({event: "mouseover"})
+
+$("input[name=checkbox]").attr({"checked":false})
+
+$("#register").click(function(){
+setMaxDigits(131);
+var Title="返回"
+var ajaxurl=$(this).attr("ajaxurl")
+var a=$("#passwordA").val()
+var b=$("#passwordB").val()
+if (a==b && a!='' && b!='' ){
+  var myDialog = art.dialog({id:Title,
+								title: Title,
+								content:"<img src='/static/images/loading1.gif' style='height:25px'>",
+								esc:false
+								})
+ $.ajax({ 
+    async:false,
+	url: "/login/",
+	data: "action=GetMePublickey", 
+	type: "post", 
+	cache : false, 
+	success: function(data) {
+		var rsa_n=data;
+		var password=$('#passwordB').val();
+		var key = new RSAKeyPair("10001", '', rsa_n); 
+		password = encryptedString(key, password);
+		$('#b').val(password)
+			$.ajax({ 
+			async:false,
+			url: ajaxurl,
+			data: $('#form_{{Random}}').serialize(), 
+			type: "post", 
+			cache : false, 
+			beforeSend:'',
+			error:function(data) {myDialog.content(data)},
+			success: function(data) {myDialog.content(data)} 
+			})
+	}
+})
+}else{
+alert('两次密码不一样！')
+}
+})
+})
+</script>
+
+</body>
+</html>

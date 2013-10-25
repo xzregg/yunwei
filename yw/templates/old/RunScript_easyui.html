@@ -1,0 +1,138 @@
+﻿<div id="script_{{Random}}_div"  style="width:600px;font-size:13px">
+	<form id="script_{{Random}}_form">
+	<div id="Rtop" style="clear: both;>
+	<input id="runscript_{{Random}}" type="button" value="执行">
+		<label>连接超时</label>
+		<select id="cmdtimeout_{{Random}}" name="cmdtimeout">
+				<option value ="10">10</option>
+				<option value ="30">30</option>
+				<option value ="60">60</option>
+		</select>
+		<label>线程</label>
+		<select id="thread_{{Random}}" name="thread">
+				<option value ="5">5</option>
+				<option value ="50">50</option>
+				<option value ="200">200</option>
+		</select>
+		<label>头信息</label>
+		<select id="sshtitle_{{Random}}" name="sshtitle">
+				<option value ="0">否</option>
+				<option value ="1">是</option>
+		</select>
+		{%if hostgroupselect%}
+			{%include "includes/hostgroupselect.html"%}
+		{%endif%}
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<label>程序</label><input id="scripttype_{{Random}}" type='text' name='scripttype' style="width:50px">
+		<label>后台</label>
+		<select id="daemon_{{Random}}" name="daemon">
+				<option value ="0">否</option>
+				<option value ="1">是</option>
+		</select>
+		<br>
+		
+		
+		<div id ="script_{{Random}}-tabs" >
+				<div id="tabs_{{Random}}-1"  title="脚本列表">
+					{% include "includes/scriptlist.html"%}
+				</div>
+				<div id="tabs_{{Random}}-2" title="手动写" >
+					<textarea id="scripttext_{{Random}}" style="height:200px;width:540px" name='script'></textarea> 
+				</div>
+				
+		</div>
+			
+		</div>
+	</form>
+	<a id="ShowOneKeyUrl_{{Random}}" href="javascript:void(0);" >OneKeyURL</a>
+
+</div>
+		
+<script type="text/javascript">
+ $(function() {
+$("#ShowOneKeyUrl_{{Random}}").click(function(){
+art.dialog({padding: 2,top:30,title:"一键URL",content:'<font size=1>'+$('#script_{{Random}}_form').serialize()+'</font>'})
+})
+
+$(function() {
+	$( "#script_{{Random}}-tabs" ).tabs({
+		border:false,
+		});
+});
+
+$("#checkbox").click(function(){
+if($(this).attr("checked")){
+$("td lable").show()
+}else{
+$("td lable").hide()
+}
+})
+
+/*判断是否json
+	var isJson = function(obj){
+		var isjson = typeof(obj) == "object" && Object.prototype.toString.call(obj).toLowerCase() == "[object object]" && !obj.length;
+		return isjson;
+	}
+*/
+
+function DisplayRet(id,data){$("div[hid='"+id+"']").html(data)}
+
+$("#runscript_{{Random}}").click(function(){
+	result = confirm("确定运行 吗?")
+	if (result){
+	if ($('#scripttext_{{Random}}').val()){
+		var Data=$('#script_{{Random}}_form').serialize()+'&'+$('#hosts_f').serialize()
+		var Value=$('#scripttext_{{Random}}').val()
+				var ret=[];var i=1;
+				var myDialog = art.dialog({top:50,content:"<h5>脚本("+Value+")执行中..."+"<img src='/media/images/loading1.gif' style='height:25px'></h5><br><br>ps:时间过长才叉我哦!",lock:true,esc:false})
+				$(".checkbox").each(function(){
+					if ($(this).attr("checked")=="checked"){
+						var hid=$(this).val()
+						hid=hid.split('__')
+						hid=hid[hid.length-1]
+						DisplayRet(hid,"["+i+"]脚本( "+" )执行中...")
+						ret.push(hid)
+						i++
+						}})
+				function AjaxRet(data) {
+						try{
+							var j=$.parseJSON(data)
+							$.each(j,function(k,v){
+								DisplayRet(ret[k-1],v)
+									})		
+							}
+						catch(err) {
+						onekeyurl='<a href="javascript:void(0);" onclick="art.dialog({top:30,padding:2,title:&quot;一键URL&quot;,content:&quot;<font size=1>'+Data+'</font>&quot;})" >OneKeyURL</a>'
+							art.dialog({
+							padding: 0,
+							top:50,
+							title:'执行结果',
+							content: onekeyurl+data,
+							});
+							}
+						myDialog.content('<h3>脚本执行完毕！</h3>').unlock().time(1);	
+							}
+				function AjaxPost(){	
+						$.ajax({ 
+						type: "post", 
+						url: "{{request.path_info}}", //本路径
+						dateType: "json", 
+						async:true,//同步模式
+						data: Data,
+						beforeSend:'',
+						cache : false, 
+						error:function(data){
+							alert('错误了！')
+							myDialog.content('<h3>发生错误！</h3>'+data).unlock().time(1)
+							},
+						success:AjaxRet,
+					})
+				}
+				setTimeout(AjaxPost,50)
+			}else{alert("没有命令！")}	
+			
+	}
+});
+
+});
+</script>

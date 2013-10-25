@@ -1,0 +1,56 @@
+{% with '/static/codemirror-3.16' as URI %}
+
+<link rel=stylesheet href={{URI}}/lib/codemirror.css>
+<script src={{URI}}/lib/codemirror.js></script>
+<script src="{{URI}}/addon/edit/matchbrackets.js"></script>
+
+<link rel="stylesheet" href="{{URI}}/addon/display/fullscreen.css">
+<script src="{{URI}}/addon/display/fullscreen.js"></script>
+
+
+
+<script src={{URI}}/mode/shell/shell.js></script>
+<script src={{URI}}/mode/python/python.js></script>
+<style type=text/css>
+  .CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}
+</style>
+{% endwith %}
+
+<script>
+    function MyCodeMirror(id,mod){
+        if (mod=="shell"){
+            return CodeMirror.fromTextArea(document.getElementById(id), {
+                    mode: 'shell',
+                    lineNumbers: true,
+                    matchBrackets: true,
+                    extraKeys: {
+                    "F11": function(cm) {
+                      cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                    },
+                    "Esc": function(cm) {
+                      if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                    }
+                  }
+                });
+        }else if (mod=="python"){
+             return CodeMirror.fromTextArea(document.getElementById(id), {
+                mode: {name: "python",
+                        version: 2,
+                        singleLineStringErrors: false},
+                lineNumbers: true,
+                indentUnit: 4,
+                tabMode: "shift",
+                matchBrackets: true,
+                extraKeys: {
+                "F11": function(cm) {
+                  cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                },
+                "Esc": function(cm) {
+                  if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                }
+              }
+             });
+        }
+    }
+
+</script>

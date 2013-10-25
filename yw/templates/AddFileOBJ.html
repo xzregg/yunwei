@@ -1,0 +1,47 @@
+﻿<style>
+*{padding:0}
+</style>
+<div id="{{Rannom}}_div" >
+	{%include "ajaxbutton.html"%}
+	<br>
+	{{UseTime}}
+	<form id="form_{{Random}}">
+		<div id="div_{{Random}}" > 
+		<table cellpadding="0" cellspacing="0" border="0" class="display" >
+			<thead><tr><th id="" style=""></th><th id="" style=""></th></tr></thead>
+			<tbody>
+				<tr><td >文件名:</td><td ><input  type="text" name="filename" value="{{o.filename}}" style="width:100px" >[{{mark}}]</td></tr><tr ><td >文件路径:</td><td ><input  type="text" name="rpath" value="{{o.rpath}}" style="width:250px" > </td></tr>
+				<tr ><td >同步方式:</td><td >
+					<input type="radio" id="edittype_0_{{Random}}" name="edittype" value="write"  ><label for="edittype_0_{{Random}}">覆盖</label>
+					<input type="radio" id="edittype_1_{{Random}}" name="edittype" value="append"  ><label for="edittype_1_{{Random}}">追加</label></td>
+				</tr>
+				{% if isEdit%}
+				<tr ><td >BeforeCMD:</td><td ><input  type="text" name="BeforeCMD" value="{{o.bcmd}}" style="width:380px" ></td></tr>
+				<tr ><td >AfterCMD:</td><td ><input  type="text" name="AfterCMD" value="{{o.acmd}}" style="width:380px" ></td></tr>
+				{% endif %}
+			</tbody>
+		</table>
+		</div>
+		{% if isEdit%}
+		<font >内容:</font><br>
+		<textarea id="FileObjText_{{Random}}" name='FileObjText' style="width:480px;height:500px;;font-size:12px">{{FileObjText}}</textarea>
+		{% endif %}
+	</form>
+</div>
+
+{%include "ajaxjs.html"%}	
+<script>
+$(function(){
+$("#edittype_{{EditType}}_{{Random}}").attr({'checked':'checked'})
+
+$("#div_{{Random}}").panel({
+title:'{{mark}} {{o.filename}}',
+    fit:false,
+    closable:false,  
+    collapsible:true,//折叠按钮
+    collapsed:false,//默认打开
+    minimizable:false,
+    maximizable:false
+})
+})
+</script>

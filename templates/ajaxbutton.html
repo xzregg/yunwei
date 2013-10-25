@@ -1,0 +1,6 @@
+{% if  button %}
+	{%for b in button%}
+	<button class="ajax_{{Random}}" type="button" ajaxurl="{{b.1}}" method="{{b.2}}" confirm="{{b.3}}" follow="{{b.4}}" closesec="{{b.5}}" style=""{{b.6}}">{{b.0}}</button>
+	{%endfor%}
+{% endif %}
+

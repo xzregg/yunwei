@@ -1,0 +1,22 @@
+﻿{%if Hostgroupselect%}
+
+	<span id="SelectHostGroup_{{Random}}" style="float:right">
+	 <label style="margin-top:3px;"> 主机/组:</label>
+		<select  name="SelectHostGroup" style="width:130px" >
+                        <option value =""></option>
+						{%for o in Hostgroupselect %}
+						<option value ="{{o}}">{{o}}</option>
+						{%endfor%}
+		</select>
+	</span>
+
+	<script>
+     $(function() {
+	$('#SelectHostGroup_{{Random}} select').combobox({panelHeight:"auto" }); 
+     
+    {% if group %}
+    $('#SelectHostGroup_{{Random}} select').combobox('setValue',"{{group}}")
+    {% endif %}
+    });
+	</script>
+{%endif%}

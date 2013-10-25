@@ -1,0 +1,62 @@
+﻿<html>
+<head>
+{%include "jscss/loadbasejs.html"%}
+{%include "jscss/codemirror.html"%}
+<style>
+*{padding:0;font-size:12px}
+textarea{font-size:12px}
+</style>
+</head>
+<body >
+{%include "ajaxbutton.html"%}
+{% if Copy %}
+	{{Copy|safe}}
+{%endif%}
+<div >
+	<form id="form_{{Random}}">
+	<table cellpadding="0" cellspacing="0" border="0" class="display"  id="_t">
+    <thead><tr><th id="" style=""></th><th id="" style=""></th></tr></thead>
+    <tbody>
+    <tr id="__id__"><td >脚本名:</td><td ><input  id="scriptname" type="text" name="scriptname" value="{{Scriptname}}" style="width：100px" > <label id="scripttype"></label></td></tr>
+    
+    <tr id="__id__"><td >目标组:</td><td ><input  type="text" name="scriptgroup" value="{{Scriptgroup}}" style="width：100px" ></td></tr>
+    <tr id="__id__"><td >脚本描述:</td><td ><textarea  name="describe" style="width:400px;height:50px"  >{{Describe}}</textarea></td></tr>
+    </tbody>
+    </table><label>脚本内容:</label><a id="fullScreen" href="javascript:void(0)">全屏F11</a>
+    <br>
+    <textarea id="code" name="scripttext" style="width:500px;height:1500px"  >{{Scripttext}}</textarea>
+	</form>
+
+</div>
+<hr>
+<div id="Response">
+</div>
+
+<script>
+
+$(function(){
+
+    function MakeCodeMirror(id,text){
+        mod='shell'
+        if (text.indexOf('.py')>-1){mod='python'}else{mod='shell'}
+        $("#scripttype").html(mod)
+        var a=MyCodeMirror(id,mod)
+        a.setSize('100%','100%')
+        return a
+    }
+    $("#scriptname").blur(function(){
+        editor.toTextArea()
+        editor=MakeCodeMirror('code',$(this).val())
+    })
+    var editor=MakeCodeMirror('code',$("#scriptname").val())
+    $("#fullScreen").click(function(){ 
+        editor.setOption("fullScreen", !editor.getOption("fullScreen"));})
+    $("button").click(function(){
+        editor.save()
+    })
+})
+
+</script>
+{%include "ajaxjs.html"%}
+</body>
+</html>

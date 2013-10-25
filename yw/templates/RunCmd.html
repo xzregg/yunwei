@@ -1,0 +1,33 @@
+﻿<div id="cmd_div_{{Random}}"  style="font-size:13px">
+	<form id="form_{{Random}}">
+	<div id="Rtop" style="clear: both;width:100%;height:100%">
+		<button class="run_{{Random}}" type="button" >执行</button>
+		<label>连接超时:</label><select id="cmdtimeout_{{Random}}" name="cmdtimeout">
+				<option value ="10">10</option>
+				<option value ="30">30</option>
+				<option value ="60">60</option>
+		</select>
+				<label>并发数:</label><select id="concurrency_{{Random}}" name="concurrency">
+				<option value ="150">150</option>
+				<option value ="100">100</option>
+				<option value ="50">50</option>
+				<option value ="300">300</option>
+
+		</select>
+		</select>
+				<label>头信息:</label><select id="sshtitle_{{Random}}" name="sshtitle">
+				<option value ="0">否</option>
+				<option value ="1">是</option>
+		</select>
+
+			{%include "includes/hostgroupselect.html"%}
+
+		<br>
+	<textarea id="text_{{Random}}" style="height:30px;width:400px" name='CMD'></textarea>
+	</div>
+	</form>
+	<a id="ShowOneKeyUrl_{{Random}}" href="javascript:void(0);" >OneKeyURL</a>
+</div>
+
+{%include "includes/cmdjs.html"%}
+
