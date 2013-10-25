@@ -4,8 +4,15 @@ yunwei
 基于django的服务器批量管理系统
 
 需要:
-    python 版本 2.6 或者 2.7
-    
+    yum -y install gcc python-devel mysql-devel MySQL-python freetype-devel openssh-clients python-sqlite python-setuptools
+    python版本2.6或者2.7,注意编译安装完，要修改yum命令
+    python包:
+	    pexpect
+	    pycrypto
+	    httplib2
+	    Imaging
+	    Django
+	    MySQL-python
 安装:
     python setup.py
     
