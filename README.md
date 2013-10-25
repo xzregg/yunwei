@@ -13,3 +13,6 @@ yunwei
     python manage.py syncdb
 启动:
     python manage.py 0.0.0.0:8000
+
+浏览:http://localhost:8000
+    默认帐号密码:admin/admin
