@@ -1,7 +1,11 @@
 
 
-yum -y install gcc python-devel mysql-devel MySQL-python freetype-devel openssh-clients python-sqlite python-setuptools || exit 1
-
+yum -y install gcc python-devel mysql-devel sqlite-devel MySQL-python freetype-devel openssh-clients python-sqlite python-setuptools || exit 1
+tar xf setuptools-1.1.6.tar.gz 
+cd setuptools-1.1.6 
+python setup.py  build
+python setup.py  install
+cd ..
 tar xf pexpect-2.3.tar.gz
 cd pexpect-2.3   
 python setup.py  build
