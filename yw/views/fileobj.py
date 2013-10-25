@@ -22,7 +22,7 @@ def Iptables(request):
 	gid,group,hid,ip=GetPost(request,['gid','group','hid','ip'])
 	isgroup,unitsid,mark=(False,hid,ip) if hid and ip else (True,gid,group)
 	filename=u'Iptables'
-	rpath='/etc/sysconfig/iptables'
+	rpath='/etc/iptables.sh'
 	o,create=fileobj.objects.get_or_create(unitsid=unitsid,filename=filename)#检查是否有记录cron,没就创建
 	if create:#新创建
 		if hid:
@@ -39,7 +39,7 @@ def Iptables(request):
 		#默认的防火墙脚本
 		
 		o.text=u'''
-/bin/sh
+#!/bin/sh
 /sbin/modprobe ip_tables
 /sbin/modprobe iptable_filter
 /sbin/modprobe iptable_nat
