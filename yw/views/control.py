@@ -83,13 +83,14 @@ def Publickey(request):
 	'''
 	Random=int(time.time()*100)
 	ajaxurl=request.path_info
-	group,action,Selects=GetPost(request,['group','action','checkbox'],[2])
+	group,action,Selects,overwrite=GetPost(request,['group','action','checkbox','overwrite'],[2])
 	if action=="updatepublickey":
 			HostsId=[ x.split('__')[-1] for x in Selects if x ] 
 			if not HostsId:
 				return HttpResponse("No Hosts!")
 			else:
-				return GetCmdRet('SetPublicKey',HostsId,group,50,10,())
+				_overwrite = True if overwrite == '1' else False
+				return GetCmdRet('SetPublicKey',HostsId,group,50,10,(_overwrite,))
 	elif action=="updateprivatekey":
 		PrivatekeyText=request.POST.get('privatekey','')
 		pass

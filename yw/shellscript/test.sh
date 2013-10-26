@@ -1,2 +1,3 @@
+id
 pwd
 echo $*

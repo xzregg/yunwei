@@ -20,9 +20,7 @@ import binascii,struct
 from models import user,views,usergroup,logs
 
 from settings import SessionTimeout,DEBUG
-sessiontimeout=SessionTimeout
-
-
+_sessiontimeout=SessionTimeout
 
 def GetUrlPermission(url):
 	UrlPermission={'kvurl':{},'normalurl':{}}
@@ -74,7 +72,7 @@ def requires_login(view,accessurl='',*args, **kwargs):#登录与权限检查
 			if isLog:LogURL(request,Title)
 			V_P=V_P or 0
 			if V_P==0:return view(request,*args, **kwargs)
-			if  request.session.get('uid','') and (Now-request.session.get('accesstime',Now)).seconds<sessiontimeout:
+			if  request.session.get('uid','') and (Now-request.session.get('accesstime',Now)).seconds<_sessiontimeout:
 				request.session['accesstime']=Now
 				U_P=user.UserGroupPermission(request.session.get('uid'))
 				if U_P==-1:return HttpResponse(u'你已被锁定!<a href="/logout/">登出</a>')

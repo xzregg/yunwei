@@ -19,7 +19,7 @@ sys.path.append(os.path.dirname(__file__))
 
 
     
-def TextToHostConfig(Text,commit=False):
+def TextToHostConfig(Text,sudo,commit=False):
     Hosts={};groups=[];Hostgroup={};i=0
     for line in Text.split('\n'):
         i+=1
@@ -35,7 +35,7 @@ def TextToHostConfig(Text,commit=False):
                     d=Hosts[k] 
                     d['alias'],d['user'],d['passwd'],d['ip'],d['port']=host[:5]
                     d['describe']=' '.join(host[5:])
-                    d['sshtype']=0 if d['user']=='root' else 1
+                    d['sshtype']=1 if d['user']!='root' and sudo else 0
                     d['group']=','+','.join(groups)+','				
                     o=None
                     if commit :#and not hosts.objects.filter(ip=d['ip'],user=d['user']):
@@ -73,14 +73,14 @@ def MulAddHost(request):
     批量增加主机
     '''
     Random=int(time.time()*100)
-    action,Text=GetPost(request,['action','Text'])
+    action,Text,sudo=GetPost(request,['action','Text','sudo'])
     if request.method=="POST": 
         if Text and action:
             if action=="commit":
-                h,g=TextToHostConfig(Text,True)
+                h,g=TextToHostConfig(Text,sudo,True)
                 return HttpResponse(u'已添加:主机组[%s]个<br><hr>%s<br><hr>主机[%s]个<br><hr>%s'%(len(g.keys()),u'<br>'.join(g.keys()),len(h.keys()),u'<br>'.join(sorted(h.keys()))))
             if action=="check":
-                h,g=TextToHostConfig(Text,False)
+                h,g=TextToHostConfig(Text,sudo,False)
                 return HttpResponse(u'已检查:主机组[%s]个<br><hr>%s<br><hr>主机[%s]个<br><hr>%s'%(len(g.keys()),u'<br>'.join(g.keys()),len(h.keys()),u'<br>'.join(sorted(h.keys()))))
             
         else:
@@ -234,6 +234,7 @@ def AddHost(request):
                     alias=alias or ''
                     host=Host(ip,port,user,password,sshtype)
                     c,s,t=host.SetPublicKey()
+
                     if c==0:
                         o=hosts.objects.create(alias=alias,ip=ip,user=user,
                                             password=password,
@@ -250,7 +251,7 @@ def AddHost(request):
                         return HostAttr(Newrequest)
                         #return HttpResponse(u'增加%s@%s成功!<br>%s'%(user,ip,s))
                     else:
-                        return HttpResponse(u"不能设置公钥！")
+                        return HttpResponse(u"不能设置公钥！<br>%s"%str(s))
                 return HttpResponse(u'<h2 style="color:red">增加%s@%s出错!</h2>'%(user,ip))
         elif  hid and action=="EditHost" :
                 try:

@@ -6,16 +6,22 @@
 				<li><a href="#tabs_{{Random}}-1">分发公钥</a></li>
 				<li><a href="#tabs_{{Random}}-2">帮助</a></li>
 			</ul>
+			<form id="form_{{Random}}">
 			<div id="tabs_{{Random}}-1" >
 				<br>
 				{%include "ajaxbutton.html"%}
+				
+				更新方式:<select name='overwrite'>
+					<option value="0">增加</option>
+					<option value="1">覆盖</option>
+				</select>
 				<br>
-				<form id="form_{{Random}}">
 					{%for h in Selects%}
 						<input type="checkbox" name="checkbox" value="{{h}}" checked="true" ><label>{{h}}</label><br>
 					{%endfor%}
-				</form>
+				
 			</div>
+			</form>
 			<div id="tabs_{{Random}}-2">
 				
 				<span>暂无</span>

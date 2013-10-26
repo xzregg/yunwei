@@ -12,7 +12,7 @@ _ScriptRootDir='/tmp/'
 def GetParamikoPrivateKey(file):
     return paramiko.RSAKey.from_private_key_file(file)
 
-Pk_path=os.path.join(os.path.dirname(os.path.dirname(__file__)),'rsa_key')
+Pk_path=os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))),'rsa_key')
 Pk_file=os.path.join(Pk_path,'id_rsa')
 PrivateKey=GetParamikoPrivateKey(Pk_file)
 
@@ -57,20 +57,19 @@ def ssh_pexcept(host,port,user,password,sudo,timeout=60,title=True,cmd='id'):
     t=u'%.1f s'%(etime-stime)
     return (RetCode,''.join(s),t)
 
-def GetSshPubkeyCMD(user):
+def GetSshPubkeyCMD(user,overwrite=False):
     pubssh1=open(os.path.join(Pk_path,'id_rsa.pub'),'rb').read()
     pubssh2=open(os.path.join(Pk_path,'id_rsa_ssh2.pub'),'rb').read()
+    _append = '>' if overwrite else '>>'
     ShellText='''if which ssh2 >/dev/null 2>&1;then
     {{
-     umask 077 && mkdir -pv ~{user}/.ssh2; sed -i  '/yw_rsa_ssh2.pub/d'	~{user}/.ssh2/authorization;echo 'Key yw_rsa_ssh2.pub' >> ~{user}/.ssh2/authorization;echo '{pubssh2}' >~{user}/.ssh2/yw_rsa_ssh2.pub && chown -R {user} ~{user}/.ssh2/
-     umask 077 && mkdir -pv ~root/.ssh2; sed -i  '/yw_rsa_ssh2.pub/d'	~root/.ssh2/authorization;echo 'Key yw_rsa_ssh2.pub' >> ~root/.ssh2/authorization;echo '{pubssh2}' >~root/.ssh2/yw_rsa_ssh2.pub && chown -R root ~root/.ssh2/
+     umask 077 && mkdir -pv ~{user}/.ssh2; sed -i  '/yw_rsa_ssh2.pub/d'	~{user}/.ssh2/authorization;echo 'Key yw_rsa_ssh2.pub' {append} ~{user}/.ssh2/authorization;echo '{pubssh2}' {append} ~{user}/.ssh2/yw_rsa_ssh2.pub && chown -R {user} ~{user}/.ssh2/
     }} > /dev/null && mkdir -p /tmp/yw && echo -e 'Set SSH2 PublicKey OK !'
 else
     {{
-    umask 077 && mkdir -pv ~{user}/.ssh; echo '{pubssh1}' > ~{user}/.ssh/authorized_keys &&chown -R {user} ~{user}/.ssh/
-    umask 077 && mkdir -pv ~root/.ssh; echo '{pubssh1}' > ~root/.ssh/authorized_keys && chown -R root ~root/.ssh/
+    umask 077 && mkdir -pv ~{user}/.ssh; echo '{pubssh1}' {append} ~{user}/.ssh/authorized_keys &&chown -R {user} ~{user}/.ssh/
     }} > /dev/null && mkdir -p /tmp/yw && echo -e 'Set SSH PublicKey OK !'
-fi'''.format(user=user,pubssh2=pubssh2,pubssh1=pubssh1)
+fi'''.format(user=user,pubssh2=pubssh2,pubssh1=pubssh1,append=_append)
     return ShellText
 
 def CheckCMD(CMD):
@@ -93,7 +92,7 @@ class Host(paramiko.SSHClient):
         self.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.host=host
         self.port=int(port)
-        self.user=user
+        self.user=user.rstrip().lstrip()
         self.password=password
         self.sudo=sudo
         self.timeout=int(timeout)
@@ -108,9 +107,7 @@ class Host(paramiko.SSHClient):
         def Action(self,*args,**kwargs):
             stime=time.time()
             try:
-                #user=self.user
-                user='root' if self.sudo else self.user
-                self.connect(self.host,self.port,user,self.password,pkey=self.key,timeout=self.timeout)
+                self.connect(self.host,self.port,self.user,self.password,pkey=self.key,timeout=self.timeout)
                 c,r=method(self,*args, **kwargs)#每个方法都返回一个元组
                 RetCode=c
             except socket.timeout:
@@ -120,7 +117,7 @@ class Host(paramiko.SSHClient):
             except:
                 #traceback.print_exc()
                 #print sys.exc_info()
-                r='Connect [%s@%s] Error!\n%s'% (self.user,self.host,sys.exc_info())
+                r='Connect [%s@%s] Error!\n%s'% (self.user,self.host,str(sys.exc_info()))
                 RetCode=555
             finally:
                 self.close()
@@ -156,8 +153,8 @@ class Host(paramiko.SSHClient):
             Retcmd='' if cmd.endswith(r'&') else ';echo Rnum:$?'
             cmd = '%s %s'%(cmd.rstrip('\n').rstrip(';'),Retcmd)
             s.append('[%s@%s] -p- Run : %s\n' % (self.user,self.host,cmd) if title else '')
-            #if self.sudo:
-                #cmd=u'''sudo su - -c "%s"''' % cmd.replace(r'"',r'\"').replace(r'$',r'\$')
+            if self.sudo:
+                cmd=u'''sudo su - -c "%s"''' % cmd.replace(r'"',r'\"').replace(r'$',r'\$')
             stdin, stdout, stderr = self.exec_command(cmd.encode('utf-8'),bufsize=-1,timeout=self.timeout*5)#处理时间超时
 
             out=stdout.read().decode('utf-8','ignore')
@@ -207,8 +204,8 @@ class Host(paramiko.SSHClient):
             s+=info if daemon else ''
             return (c,s)
             
-    def SetPublicKey(self):
-        CMD=GetSshPubkeyCMD(self.user)
+    def SetPublicKey(self,overwrite=False):
+        CMD=GetSshPubkeyCMD(self.user,overwrite)
         c,s,t=self.RunCMD(False,CMD)
         return c,'[%s@%s]\n'% (self.user,self.host)+'\n'.join(s.split('\n')[-2:]),t
 

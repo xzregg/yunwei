@@ -76,7 +76,7 @@
 
 <script >
  $(function() {
-//$("#id_checktype").combobox({panelHeight:"auto" })
+
 $(".radio").buttonset()
 $("a").button()
  
@@ -84,8 +84,10 @@ $("select").combobox({panelHeight:"auto"})
 
 $("#scriptopt").hide()
 $("#_Item").hide()
- 
- $("#ChoiceCmd").click(function(){
+$("#_Item").dialog()
+$("#_Item").dialog("close")//init
+
+$("#ChoiceCmd").click(function(){
 	$("#scriptopt").hide()
 	$("#CMDorScriptText").attr({"name":"CMD"})
 })
@@ -111,13 +113,12 @@ function bindingOneKeyItem(){
 		}
 		strs=OnoKeyUrl.split("&")
 		if(strs.length>1){
-		for(var i=0;i<strs.length;i++){
+		for(var i in strs){
 			var a=strs[i].split('=')
 			var b=decodeURIComponent(a[1].replace(/\+/g, ' '))
-			if (a[0]=="SelectHostGroup"){$("#SelectHostGroup_{{Random}} select").combobox('setValue',b)}
+			//if (a[0]=="SelectHostGroup"){$("#SelectHostGroup_{{Random}} select").combobox('setValue',b)}
 			$("[name="+a[0]+"]").val(b)
-			$("select [name='"+a[0]+"']").combobox('setValue',b)
-
+			$("select[comboname="+a[0]+"]").combobox('setValue',b)
 			}
 		}else{$("#CMDorScriptText").val('')}
         
@@ -128,6 +129,7 @@ function bindingOneKeyItem(){
 						buttons:{                     
 							"确认":function(){
 							 prev.val($("#Item_form").serialize())
+
 							 $(this).dialog("close");
 							},     
 							"关闭": function (){

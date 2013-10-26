@@ -1,8 +1,16 @@
 yunwei
 ======================
 
-基于django的服务器批量管理系统
+一个服务器批量管理系统
 
+
+使用以下开源软件：
+django
+jquery
+artdialog
+codemirror
+juqerydatatable
+freewebfilemanager
 
 
 需要:
@@ -29,7 +37,13 @@ yunwei
 
     python manage.py 0.0.0.0:8000
     
+    或者
+
+    uwsgi --http 0.0.0.0:8000 --module wsgi  --chdir ./ --pythonpath .. --enable-threads -M -p4  --reload-mercy 4
 
 浏览:http://localhost:8000
 
     默认帐号密码:admin/admin
+
+
+    

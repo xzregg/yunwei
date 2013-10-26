@@ -6,7 +6,7 @@ import traceback
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-PWD=os.path.dirname(__file__)+os.sep
+PWD=os.path.dirname(os.path.realpath(__file__))+os.sep
 sys.path.insert(1,os.path.join(PWD,'libs'))
 
 
@@ -16,11 +16,11 @@ UploadDir='uploads'
 AbsUploadDir=os.path.join(PWD,UploadDir)
 FileManagerChroot=UploadDir
 
-SessionTimeout=12000#seconds
+SessionTimeout=120000#seconds
 LoginFailNums=10
 LonginAgainSec=60#seconds
 
-DefaultShow=['ADMIN系统','查看日志','运维系统','文件管理']
+DefaultShow=['ADMIN系统','查看日志','运维系统','文件管理','查看一键']
 
 ADMINS = (
 	# ('Your Name', 'your_email@domain.com'),

@@ -16,15 +16,9 @@ _thispath = os.path.realpath(__file__)
 ConcurrencyNums=150
 
 ScriptDir=os.path.join(os.path.dirname(_thispath),'shellscript')
-FileObjectsDir=os.path.join(os.path.dirname(_thispath),'fileobjects')
+
 
 WebSSHAddress='127.0.0.1:7001'
 WebSSHFormat='''<a href="javascript:viod(0);" onclick="window.open ('%s',Math.round(Math.random()*1000000000),'height=400,width=500,scrollbars=no')" >%s</a>'''
 
-def CreateDir(path=[]):
-	for d in path:
-		if not os.path.isdir(d) and not os.path.isfile(d):
-			#print 'create %s'%d
-			os.mkdir(d)
-		#print '%s exists!'%d
-CreateDir([ScriptDir,FileObjectsDir])
+

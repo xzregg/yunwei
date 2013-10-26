@@ -6,8 +6,10 @@
 *{font-size:12px}
 </style>
 <body>
+<form id ="form_{{Random}}" action="" method='post' class="pull-right">
 {%include "ajaxbutton.html"%}
- <form id ="form_{{Random}}" action="" method='post' class="pull-right">
+<input type="checkbox" class="checkbox" name="sudo" value="1">非root用户都能sudo
+
  <table>
 	<th>主机配置信息</th><th></th>
 	  <tr><td><textarea style="height:500px;width:500px" name='Text'>
