@@ -1,7 +1,7 @@
 #coding:utf-8
 from django.http import HttpResponse,Http404
 import os
-path=os.path.dirname(__file__)+os.sep
+path = os.path.dirname(__file__) + os.sep
 def get_check_code_image( request):
     """
   background #随机背景颜色
@@ -14,8 +14,8 @@ def get_check_code_image( request):
     """
     from PIL import Image, ImageDraw, ImageFont
     import random,datetime,cStringIO,hashlib
-    background = (random.randrange(230,255),random.randrange(230,255),random.randrange(230,255))
-    line_color = (random.randrange(0,255),random.randrange(0,255),random.randrange(0,255))
+    background  = (random.randrange(230,255),random.randrange(230,255),random.randrange(230,255))
+    line_color  = (random.randrange(0,255),random.randrange(0,255),random.randrange(0,255))
     img_width = 80
     img_height = 30
     font_color = ['black','darkblue','darkred']
@@ -25,11 +25,11 @@ def get_check_code_image( request):
     #新建画布
     im = Image.new('RGB',(img_width,img_height),background)
     draw = ImageDraw.Draw(im)
-    A_Z=''.join(map(chr,range(65,91)+range(97,123)))
-    string =A_Z+'#@^%&*!'
-    string='1234567890'
+    A_Z = ''.join(map(chr,range(65,91) + range(97,123)))
+    string  = A_Z + '#@^%&*!'
+    string = '1234567890'
     code = random.sample(string,5)
-    #code=md5str[:4]
+    #code = md5str[:4]
     #新建画笔
     draw = ImageDraw.Draw(im)
     #画干扰线
@@ -42,9 +42,9 @@ def get_check_code_image( request):
     x = 2
     for i in code:
         y = random.randrange(0,10)
-        draw.text((x,y), i, font=font, fill=random.choice(font_color))
-        x += 14
-        request.session['verify'] += i
+        draw.text((x,y),i,font=font,fill=random.choice(font_color))
+        x +=  14
+        request.session['verify'] +=  i
     del x
     del draw
     buf = cStringIO.StringIO()

@@ -197,7 +197,7 @@ class Host(paramiko.SSHClient):
             ScriptLog=os.path.join(savepath,'%s_daemon'%ScriptFile)#后台记录文件
             Daemon='';info=''
             if daemon:
-                Daemon=' >%s 2&>1 &'%ScriptLog
+                Daemon=' >%s 2>&1 &'%ScriptLog
                 info='You can run "tail %s" see the script run info!'%ScriptLog
             cmd='cd %s;%s%s'%(savepath,Shell,ScriptOption)
             c,s=self._runcmd(title,cmd,redirect=Daemon)#执行脚本

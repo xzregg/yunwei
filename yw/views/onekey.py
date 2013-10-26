@@ -7,6 +7,7 @@ from libs.html import *
 from ..models import  onekeys,hostgroup
 import urllib,urllib2
 
+
 def ShowOneKey(request):
 	'''
 	查看一键
