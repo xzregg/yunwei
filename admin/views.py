@@ -193,7 +193,7 @@ def AddUser(request):
 	loginname,username,password,contact,viewslist=GetPost(request,
 	['loginname','username','password','contact','checkbox'])
 	if request.method=="POST":
-		if  username and loginname and password:
+		if  viewslist and username and loginname and password:
 			privkey=request.session['privkey']
 			password=privatekey_decodeing(password,privkey)
 			password=Sha1Md5(password)
@@ -204,7 +204,7 @@ def AddUser(request):
 				return HttpResponse('注册成功!')
 			else:
 				return HttpResponse('用户已存在!')
-		return HttpResponse('注册失败!')
+		return HttpResponse(u'请至少选择一个权限！') if not viewslist else HttpResponse(u'注册失败!')
 	Views=GetPermission(request.session['permission'],False)
 
 	return render_to_response('AddUser.html',locals())
@@ -235,7 +235,9 @@ def EditUser(request,Me=False):
 				password=privatekey_decodeing(password,privkey)
 				password=Sha1Md5(password)
 				obj.password=password
-			obj.loginname,obj.username,obj.contact=loginname,username,contact
+			obj.username,obj.contact=username,contact
+			if not Me:
+				obj.loginname = LoginName
 			obj.save()
 			return HttpResponse(u'编辑%s[%s]成功!'%(User,username))
 	button=[[u'确定',u'?uid=%s&user=%s'%(Uid,User)]]

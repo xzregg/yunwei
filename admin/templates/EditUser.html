@@ -14,11 +14,13 @@
  <hr>
  <table>
 	<th></th><th></th>
-	<tr><td><label>登录名</label></td><td><input  name='loginname' class="input-small" type="text" value="{{LoginName}}"></td></tr>
-	<tr><td><label>真实姓名</label></td><td><input name='username' class="input-small" type="text" value="{{UserName}}"></td></tr>
+	{% if not Me %}
+	<tr><td><label>登录名:</label></td><td><input  name='loginname' class="input-small" type="text" value="{{LoginName}}"></td></tr>
+	{% endif %}
+	<tr><td><label>真实姓名:</label></td><td><input name='username' class="input-small" type="text" value="{{UserName}}"></td></tr>
 	<tr><td>联系方式:</td><td><input name='contact'  type="text" value="{{Contact}}"></td></tr>
-        <tr><td><label>登录密码</label></td><td><input id ="passwordA"  type="password" ><input id="b" name='password'  type="hidden"></td></tr>
-	<tr><td><label>再次输入</label></td><td><input id ="passwordB"  type="password" ></td></tr>
+        <tr><td><label>登录密码:</label></td><td><input id ="passwordA"  type="password" ><input id="b" name='password'  type="hidden"></td></tr>
+	<tr><td><label>再次输入:</label></td><td><input id ="passwordB"  type="password" ></td></tr>
 	<tr><td></td><td><button  type="button" ajaxurl="" id="edituser">保存</button></td></tr>
 </table>
  </form>
