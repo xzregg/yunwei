@@ -23,6 +23,6 @@ def MakeSshRsaKey(savepathfile):
 		
 
 if __name__ == "__main__":
-		path=os.path.dirname(__file__)
+		path=os.path.dirname(os.path.realpath(__file__))
 		if path:os.chdir(path)
 		MakeSshRsaKey('id_rsa')
