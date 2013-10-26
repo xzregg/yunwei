@@ -90,7 +90,7 @@ def main():
 	(o, args) = parser.parse_args()
 	if o.concurrency:
 		global _concurrency
-		_concurrency=150 if int(o.concurrency)<200 else o.concurrency
+		_concurrency = o.concurrency or 150
 		
 		
 	TarGet=[]
