@@ -4,8 +4,9 @@ yunwei
 一个服务器批量管理系统
 
 
-使用以下开源软件：
+基于以下开源软件：
 django
+paramiko
 jquery
 artdialog
 codemirror
