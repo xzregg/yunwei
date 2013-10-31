@@ -23,7 +23,7 @@ freewebfilemanager
 	    pycrypto
 	    httplib2
 	    Imaging
-	    Django
+	    Django 1.2
 	    MySQL-python
 安装:
     
