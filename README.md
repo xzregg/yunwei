@@ -35,7 +35,7 @@ freewebfilemanager
     
 启动:
 
-    python manage.py 0.0.0.0:8000
+    python manage.py runserver 0.0.0.0:8000
     或者
     uwsgi --http 0.0.0.0:8000 --module wsgi  --chdir ./ --pythonpath .. --enable-threads -M -p4  --reload-mercy 4
     最好配合nginx使用uwsgi
