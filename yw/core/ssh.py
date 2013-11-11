@@ -84,7 +84,7 @@ def CheckCMD(CMD):
 
                     
 class Host(paramiko.SSHClient):
-    def __init__(self,host,port,user,password,sudo,timeout=30,privatekey=PrivateKey):
+    def __init__(self,host,port,user,password,sudo,timeout=30,privatekey=None):
         '''
         @timeout 为连接超时
         '''
@@ -96,7 +96,7 @@ class Host(paramiko.SSHClient):
         self.password=password
         self.sudo=sudo
         self.timeout=int(timeout)
-        self.key=privatekey
+        self.key=privatekey or PrivateKey
         self.scriptroot=_ScriptRootDir
         #paramiko.util.log_to_file('paramiko.log')
     
