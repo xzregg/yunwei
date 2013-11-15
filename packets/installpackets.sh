@@ -43,7 +43,7 @@ tar xf MySQL-python-1.2.3.tar.gz
 cd MySQL-python-1.2.3
 python setup.py  build 
 python setup.py  install
-cd..
+cd ..
 tar xf uwsgi-1.9.5.tar.gz 
 cd uwsgi-1.9.5   
 python setup.py  build 
