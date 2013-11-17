@@ -462,12 +462,12 @@ def CheckViewPermission(request):
 	Vid,action,Selects = GetPost(request,['vid','action','checkbox'],[2])
 	if action:
 			Selects = [Vid] if Vid else [x.split('__')[-1] for x in Selects if x]
-			cp,Retmsg=(True,u'取消查权成功!') if action == "1" else (False,u'设置权限检测成功!')
+			cp,Retmsg=(True,u'设置权限检测成功!') if action == "1" else (False,u'取消查权成功!')
 			views.CheckViewPermission(Selects, cp)
 			return HttpResponse(Retmsg)
 	else:
-		button = [[u'权限检测',MakeURL(CheckViewPermission) + u'?action = 1','load',u'权限检测','',3],
-				[u'取消查权',MakeURL(CheckViewPermission) + u'?action = 0','load',u'取消查权','',3],
+		button = [[u'权限检测',MakeURL(CheckViewPermission) + u'?action=1','load',u'权限检测','',3],
+				[u'取消查权',MakeURL(CheckViewPermission) + u'?action=0','load',u'取消查权','',3],
 		]
 		return render_to_response('ViewsAction.html',locals())
 	
@@ -499,7 +499,7 @@ def ViewsManage(request):#视图管理
 	T.done()
 	EditAjaxUrl = MakeURL(Modify)
 	button = [[u'增加权限视图',MakeURL(AddPermission),'open'],
-			[u'清除错误视图',MakeURL(ClearErrView) + u'?action = clearerrviews','load'],
+			[u'清除错误视图',MakeURL(ClearErrView) + u'?action=clearerrviews','load'],
 			[u'检查权限',MakeURL(CheckViewPermission),'load'],
 			[u'菜单显示',MakeURL(ViewsShow),'load'],
 			[u'记录日志',MakeURL(ViewsLog),'load'],
@@ -582,7 +582,7 @@ def ClearLogs(request):
 			return HttpResponse('清除日志成功！')
 		else:
 			return HttpResponse('清除日志失败！')
-	button = [[u'确定清除全部日志',MakeURL(ClearLogs) + u'?action = clear','load',u'清除全部日志','center',3]]
+	button = [[u'确定清除全部日志',MakeURL(ClearLogs) + u'?action=clear','load',u'清除全部日志','center',3]]
 	return render_to_response('Clear.html',locals())
 	
 def ShowLogs(request):
@@ -613,7 +613,7 @@ def ShowLogs(request):
 	for o in  Logs:  
 		T.row_add(o.id,
 					[o.id,o.who,DateTimeToStrTime(o.logdatetime),o.ip,o.title,o.info.replace('<',r'&lt;').replace('>',r'&gt;').replace('\n','<br>')],
-					['','','','','','class = "EditTD"']
+					['','','','','','class="EditTD"']
 				)
 	T.done()
 	button = [[u'清除日志',MakeURL(ClearLogs),'load']
