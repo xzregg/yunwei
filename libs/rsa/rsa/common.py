@@ -51,11 +51,11 @@ def bit_size(num):
 
     hex_num = "%x" % num
     return ((len(hex_num) - 1) * 4) + {
-        '0':0, '1':1, '2':2, '3':2,
-        '4':3, '5':3, '6':3, '7':3,
-        '8':4, '9':4, 'a':4, 'b':4,
-        'c':4, 'd':4, 'e':4, 'f':4,
-     }[hex_num[0]]
+        '0': 0, '1': 1, '2': 2, '3': 2,
+        '4': 3, '5': 3, '6': 3, '7': 3,
+        '8': 4, '9': 4, 'a': 4, 'b': 4,
+        'c': 4, 'd': 4, 'e': 4, 'f': 4,
+    }[hex_num[0]]
 
 
 def _bit_size(number):
@@ -67,7 +67,7 @@ def _bit_size(number):
 
     if number == 0:
         return 0
-    
+
     # This works, even with very large numbers. When using math.log(number, 2),
     # you'll get rounding errors and it'll fail.
     bits = 0
@@ -102,7 +102,7 @@ def byte_size(number):
     if mod or number == 0:
         quanta += 1
     return quanta
-    #return int(math.ceil(bit_size(number) / 8.0))
+    # return int(math.ceil(bit_size(number) / 8.0))
 
 
 def extended_gcd(a, b):
@@ -116,16 +116,18 @@ def extended_gcd(a, b):
     y = 1
     lx = 1
     ly = 0
-    oa = a                             #Remember original a/b to remove 
-    ob = b                             #negative values from return results
+    oa = a  # Remember original a/b to remove
+    ob = b  # negative values from return results
     while b != 0:
         q = a // b
-        (a, b)  = (b, a % b)
-        (x, lx) = ((lx - (q * x)),x)
-        (y, ly) = ((ly - (q * y)),y)
-    if (lx < 0): lx += ob              #If neg wrap modulo orignal b
-    if (ly < 0): ly += oa              #If neg wrap modulo orignal a
-    return (a, lx, ly)                 #Return only positive values
+        (a, b) = (b, a % b)
+        (x, lx) = ((lx - (q * x)), x)
+        (y, ly) = ((ly - (q * y)), y)
+    if (lx < 0):
+        lx += ob  # If neg wrap modulo orignal b
+    if (ly < 0):
+        ly += oa  # If neg wrap modulo orignal a
+    return (a, lx, ly)  # Return only positive values
 
 
 def inverse(x, n):
@@ -166,7 +168,7 @@ def crt(a_values, modulo_values):
     '''
 
     m = 1
-    x = 0 
+    x = 0
 
     for modulo in modulo_values:
         m *= modulo
@@ -182,4 +184,3 @@ def crt(a_values, modulo_values):
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-

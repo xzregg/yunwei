@@ -35,6 +35,7 @@ SSH2_AGENTC_REQUEST_IDENTITIES, SSH2_AGENT_IDENTITIES_ANSWER, \
 
 
 class Agent:
+
     """
     Client interface for using private keys from an SSH agent running on the
     local machine.  If an SSH agent is running, this class can be used to
@@ -45,7 +46,7 @@ class Agent:
     sockets, this probably doesn't work on Windows.  It does work on most
     posix platforms though (Linux and MacOS X, for example).
     """
-    
+
     def __init__(self):
         """
         Open a session with the local machine's SSH agent, if one is running.
@@ -74,7 +75,7 @@ class Agent:
         else:
             # no agent support
             return
-            
+
         ptype, result = self._send_message(chr(SSH2_AGENTC_REQUEST_IDENTITIES))
         if ptype != SSH2_AGENT_IDENTITIES_ANSWER:
             raise SSHException('could not get keys from ssh-agent')
@@ -124,12 +125,13 @@ class Agent:
 
 
 class AgentKey(PKey):
+
     """
     Private key held in a local SSH agent.  This type of key can be used for
     authenticating to a remote server (signing).  Most other key operations
     work as expected.
     """
-    
+
     def __init__(self, agent, blob):
         self.agent = agent
         self.blob = blob

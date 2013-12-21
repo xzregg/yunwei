@@ -24,6 +24,7 @@ import fnmatch
 
 
 class SSHConfig (object):
+
     """
     Representation of config information as stored in the format used by
     OpenSSH. Queries can be made via L{lookup}. The format is described in
@@ -38,7 +39,7 @@ class SSHConfig (object):
         """
         Create a new OpenSSH config object.
         """
-        self._config = [ { 'host': '*' } ]
+        self._config = [{'host': '*'}]
 
     def parse(self, file_obj):
         """
@@ -74,7 +75,7 @@ class SSHConfig (object):
                     if len(matches) > 0:
                         configs.append(matches[0])
                     else:
-                        config = { 'host': host }
+                        config = {'host': host}
                         self._config.append(config)
                         configs.append(config)
             else:
@@ -100,9 +101,10 @@ class SSHConfig (object):
         @param hostname: the hostname to lookup
         @type hostname: str
         """
-        matches = [x for x in self._config if fnmatch.fnmatch(hostname, x['host'])]
+        matches = [
+            x for x in self._config if fnmatch.fnmatch(hostname, x['host'])]
         # sort in order of shortest match (usually '*') to longest
-        matches.sort(lambda x,y: cmp(len(x['host']), len(y['host'])))
+        matches.sort(lambda x, y: cmp(len(x['host']), len(y['host'])))
         ret = {}
         for m in matches:
             ret.update(m)
